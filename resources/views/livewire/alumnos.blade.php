@@ -21,8 +21,9 @@
 
         <x-table>
             @slot('header')
-                <th>ID</th>
+                <th>#</th>
                 <th>Nombre</th>
+                <th>Carnet</th>
                 <th>Celular</th>
                 <th>Fecha matricula</th>
                 <th>Acción</th>
@@ -32,6 +33,7 @@
                 <tr>
                     <td data-title="ID">{{ $alumno->id }}</td>
                     <td data-title="Nombre">{{ $alumno->nombre }}</td>
+                    <td data-title="Carnet">{{ $alumno->carnet }}</td>
                     <td data-title="Celular">{{ $alumno->celular }}</td>
                     <td data-title="Fecha matricula">{{ $alumno->created_at }}</td>
                     <td data-title="Acción">
