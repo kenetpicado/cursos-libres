@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Alumno extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'edad', 'celular', 'ciudad', 'comunidad', 'direccion'];
+    protected $fillable = ['carnet', 'nombre', 'edad', 'celular', 'ciudad', 'comunidad', 'direccion'];
 
     public function setNombreAttribute($value)
     {

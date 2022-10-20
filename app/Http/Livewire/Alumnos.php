@@ -15,6 +15,7 @@ class Alumnos extends Component
     protected $listeners = ['delete_element'];
 
     public $sub_id = null;
+    public $carnet = null;
     public $nombre = null;
     public $edad = null;
     public $celular = null;
@@ -24,6 +25,7 @@ class Alumnos extends Component
 
     protected $rules = [
         'nombre' => 'required',
+        'carnet' => 'required|max:10',
         'edad' => 'required|integer',
         'celular' => 'required|numeric|digits:8',
         'ciudad' => 'required|max:50',
@@ -44,6 +46,7 @@ class Alumnos extends Component
             ->select([
                 'id',
                 'nombre',
+                'carnet',
                 'celular',
                 'created_at'
             ])
@@ -56,6 +59,7 @@ class Alumnos extends Component
     /* Update or Create */
     public function store()
     {
+        $this->carnet = "22-2605-LE";
         $data = $this->validate();
 
         Alumno::updateOrCreate(['id' => $this->sub_id], $data);
