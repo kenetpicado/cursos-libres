@@ -22,8 +22,14 @@ class Grupo extends Model
     {
         $this->attributes['horario'] = trim(strtoupper($value));
     }
+
     public function setDuracionAttribute($value)
     {
         $this->attributes['duracion'] = trim(strtoupper($value));
+    }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
     }
 }

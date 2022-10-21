@@ -16,6 +16,8 @@ class Grupos extends Component
     public $curso_id = null;
     public $docente_id = null;
 
+    protected $listeners = ['delete_element'];
+
     public function resetFields()
     {
         $this->resetExcept(['anyo']);
@@ -35,6 +37,16 @@ class Grupos extends Component
         $this->anyo = date('Y');
     }
 
+    public function getCursosProperty()
+    {
+        return DB::table('cursos')->where('estado', '1')->get(['id', 'nombre']);
+    }
+
+    public function getDocentesProperty()
+    {
+        return DB::table('docentes')->where('estado', '1')->get(['id', 'nombre']);
+    }
+
     public function render()
     {
         $grupos = DB::table('grupos')
@@ -43,14 +55,13 @@ class Grupos extends Component
             ->select([
                 'grupos.*',
                 'cursos.nombre as curso',
-                'docentes.nombre as docente'
+                'docentes.nombre as docente',
+                DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
             ])
+            ->latest('id')
             ->paginate(20);
 
-        $cursos = DB::table('cursos')->where('estado', '1')->get();
-        $docentes = DB::table('docentes')->where('estado', '1')->get();
-
-        return view('livewire.grupos', compact('grupos', 'cursos', 'docentes'));
+        return view('livewire.grupos', compact('grupos'));
     }
 
     public function store()
@@ -79,5 +90,12 @@ class Grupos extends Component
     public function delete_element($grupo_id)
     {
         $grupo = Grupo::find($grupo_id);
+
+        if ($grupo->inscripciones()->count() > 0)
+            session()->flash('message', config('app.undeleted'));
+        else {
+            $grupo->delete();
+            session()->flash('message', config('app.deleted'));
+        }
     }
 }

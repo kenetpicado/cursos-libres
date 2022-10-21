@@ -20,7 +20,7 @@
 
     <style>
         .btn {
-            width: 5rem;
+            min-width: 5rem;
         }
         @media screen and (max-width: 800px) {
 

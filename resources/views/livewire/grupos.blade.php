@@ -4,13 +4,13 @@
     <x-modal label="Agregar Grupo">
         <x-select name="curso_id" label="Curso">
             <option value="">Seleccionar Curso</option>
-            @foreach ($cursos as $curso)
+            @foreach ($this->cursos as $curso)
                 <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
             @endforeach
         </x-select>
         <x-select name="docente_id" label="Docente">
             <option value="">Seleccionar Docente</option>
-            @foreach ($docentes as $docente)
+            @foreach ($this->docentes as $docente)
                 <option value="{{ $docente->id }}">{{ $docente->nombre }}</option>
             @endforeach
         </x-select>
@@ -28,6 +28,7 @@
                 <th>Docente</th>
                 <th>Año</th>
                 <th>Horario</th>
+                <th>Alumnos</th>
                 <th>Acción</th>
             @endslot
             @forelse ($grupos as $grupo)
@@ -36,8 +37,23 @@
                     <td data-title="Docente">{{ $grupo->docente }}</td>
                     <td data-title="Año">{{ $grupo->anyo }}</td>
                     <td data-title="Horario">{{ $grupo->horario }}</td>
+                    <td data-title="Alumnos">
+                        <span class="badge text-bg-primary">{{ $grupo->inscripciones_count }}</span> 
+                    </td>
                     <td data-title="Acción">
-                        <button wire:click="edit({{ $grupo->id }})" class="btn btn-sm btn-primary">Editar</button>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Acciones
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" wire:click="edit({{ $grupo->id }})">Editar</button>
+                                </li>
+                                <li><button class="dropdown-item"
+                                        onclick="delete_element('{{ $grupo->id }}', '{{ $grupo->curso }} {{$grupo->horario }}')">Eliminar</button>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             @empty
