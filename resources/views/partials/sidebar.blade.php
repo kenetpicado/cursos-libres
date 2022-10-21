@@ -18,6 +18,7 @@
                 <x-sidebar-item route="docentes">Docentes</x-sidebar-item>
                 <x-sidebar-item route="grupos">Grupos</x-sidebar-item>
                 <x-sidebar-item route="alumnos">Alumnos</x-sidebar-item>
+                <x-sidebar-item route="pagos">Pagos</x-sidebar-item>
             </ul>
         </div>
     </div>
