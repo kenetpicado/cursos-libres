@@ -1,7 +1,7 @@
 <div class="card">
     <x-header-modal label="Cursos"></x-header-modal>
 
-    <x-modal label="Agregar Producto">
+    <x-modal label="Agregar Curso">
         <x-input name="nombre"></x-input>
 
         <x-select name="estado">

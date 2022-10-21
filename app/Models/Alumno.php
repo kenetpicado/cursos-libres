@@ -29,4 +29,9 @@ class Alumno extends Model
     {
         $this->attributes['direccion'] = trim(strtoupper($value));
     }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('d-m-y', strtotime($value));
+    }
 }

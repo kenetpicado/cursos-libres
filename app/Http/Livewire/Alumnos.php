@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Alumno;
+use App\Models\Inscripcion;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,9 +24,11 @@ class Alumnos extends Component
     public $comunidad = null;
     public $direccion = null;
 
+    public $grupo_id = null;
+
     protected $rules = [
         'nombre' => 'required',
-        'carnet' => 'required|max:10',
+        'carnet' => 'required|max:10|unique:alumnos',
         'edad' => 'required|integer',
         'celular' => 'required|numeric|digits:8',
         'ciudad' => 'required|max:50',
@@ -33,23 +36,34 @@ class Alumnos extends Component
         'direccion' => 'required|max:70',
     ];
 
+    public function getGruposProperty()
+    {
+        return DB::table('grupos')
+            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
+            ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
+            ->get([
+                'grupos.id',
+                'grupos.horario',
+                'cursos.nombre as curso',
+                'docentes.nombre as docente'
+            ]);
+    }
+
     public function resetFields()
     {
         $this->reset();
         $this->resetErrorBag();
     }
 
-
     public function render()
     {
-        $alumnos = DB::table('alumnos')
-            ->select([
-                'id',
-                'nombre',
-                'carnet',
-                'celular',
-                'created_at'
-            ])
+        $alumnos = Alumno::select([
+            'id',
+            'nombre',
+            'carnet',
+            'celular',
+            'created_at'
+        ])
             ->latest('id')
             ->paginate(20);
 
@@ -59,10 +73,26 @@ class Alumnos extends Component
     /* Update or Create */
     public function store()
     {
-        $this->carnet = "22-2605-LE";
+        $this->carnet = $this->generateCarnet($this->ciudad);
+
         $data = $this->validate();
 
-        Alumno::updateOrCreate(['id' => $this->sub_id], $data);
+        if ($this->sub_id) {
+            unset($data['carnet']);
+            Alumno::find($this->sub_id)->update($data);
+
+        } else {
+            $alumno = Alumno::create($data);
+
+            $this->validate([
+                'grupo_id' => 'required'
+            ]);
+
+            Inscripcion::create([
+                'grupo_id' => $this->grupo_id,
+                'alumno_id' => $alumno->id,
+            ]);
+        }
 
         session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
 
@@ -87,5 +117,12 @@ class Alumnos extends Component
     {
         Alumno::find($alumno_id)->delete();
         session()->flash('message', config('app.deleted'));
+    }
+
+    public function generateCarnet($ciudad)
+    {
+        $comb = "0123456789";
+        $shfl = str_shuffle($comb);
+        return date('y') . "-" . substr($shfl, 0, 4) . '-' . substr($ciudad, 0, 2);
     }
 }
