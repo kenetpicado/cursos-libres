@@ -14,8 +14,10 @@
                 <option value="{{ $docente->id }}">{{ $docente->nombre }}</option>
             @endforeach
         </x-select>
-        <x-input name="anyo" label="Año"></x-input>
-        <x-input name="horario"></x-input>
+        <div class="row">
+            <div class="col"><x-input name="anyo" label="Año"></x-input></div>
+            <div class="col"> <x-input name="horario"></x-input></div>
+        </div>
         <x-input name="duracion"></x-input>
     </x-modal>
 
@@ -38,7 +40,7 @@
                     <td data-title="Año">{{ $grupo->anyo }}</td>
                     <td data-title="Horario">{{ $grupo->horario }}</td>
                     <td data-title="Alumnos">
-                        <span class="badge text-bg-primary">{{ $grupo->inscripciones_count }}</span> 
+                        <a href="{{route('grupos.show', $grupo->id)}}" class="btn btn-sm btn-primary">{{ $grupo->inscripciones_count }}</a>
                     </td>
                     <td data-title="Acción">
                         <div class="dropdown">

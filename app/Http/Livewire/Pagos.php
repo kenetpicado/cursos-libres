@@ -15,6 +15,7 @@ class Pagos extends Component
 
     public $sub_id = null;
     public $alumno_id = null;
+    public $grupo_id = null;
     public $concepto = null;
     public $monto = null;
     public $recibi_de = null;
@@ -23,6 +24,7 @@ class Pagos extends Component
 
     protected $rules = [
         'alumno_id' => 'required|integer',
+        'grupo_id' => 'required|integer',
         'concepto' => 'required|max:100',
         'monto' => 'required|numeric',
         'recibi_de' => 'required|max:50',
@@ -51,6 +53,18 @@ class Pagos extends Component
     public function getAlumnoProperty()
     {
         return DB::table('alumnos')->find($this->alumno_id, ['id', 'nombre']);
+    }
+
+    public function getInscripcionesProperty()
+    {
+        return DB::table('inscripcions')
+            ->where('alumno_id', $this->alumno_id)
+            ->join('grupos', 'grupos.id', '=', 'inscripcions.grupo_id')
+            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
+            ->get([
+                'inscripcions.*',
+                'cursos.nombre'
+            ]);
     }
 
     public function render()

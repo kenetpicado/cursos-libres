@@ -23,7 +23,12 @@ class CreatePagosTable extends Migration
             $table->foreign('alumno_id')
                 ->references('id')
                 ->on('alumnos');
-                
+
+            $table->unsignedBigInteger('grupo_id');
+            $table->foreign('grupo_id')
+                ->references('id')
+                ->on('grupos');
+
             $table->timestamps();
         });
     }

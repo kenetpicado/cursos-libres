@@ -15,6 +15,14 @@
                 <x-input name="recibi_de" label="Recibi de"></x-input>
             </div>
         </div>
+        <x-select name="grupo_id" label="Grupo">
+            <option value="">Seleccionar</option>
+            @forelse ($this->inscripciones as $inscripcion)
+                <option value="{{ $inscripcion->grupo_id }}">{{ $inscripcion->nombre }}</option>
+            @empty
+                <option value="">No hay inscripciones</option>
+            @endforelse
+        </x-select>
     </x-modal>
 
     <div class="card-body">

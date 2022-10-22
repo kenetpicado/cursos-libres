@@ -29,6 +29,8 @@ return [
     'env' => env('APP_ENV', 'production'),
 
     'created' => "Registro guardado correctamente",
+    'added' => "Alumno inscrito correctamente",
+    'exist' => "El alumno ya esta inscrito en este grupo",
     'updated' => "Registro actualizado correctamente",
     'deleted' => "Registro eliminado correctamente",
     'undeleted' => "No es posible eliminar este registro porque tiene datos relacionados",

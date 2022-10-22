@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col">
                 <x-select name="ciudad">
-                    <option value="">Seleccionar</option>
+                    <option value="" disabled>Seleccionar</option>
                     <option value="LEON">LEON</option>
                     <option value="CHINANDEGA">CHINANDEGA</option>
                 </x-select>
@@ -29,11 +29,13 @@
         @if (!$sub_id)
             <x-select name="grupo_id" label="Inscribir a">
                 <option value="">Seleccionar Curso</option>
-                @foreach ($this->grupos as $grupo)
+                @forelse ($this->grupos as $grupo)
                     <option value="{{ $grupo->id }}">{{ $grupo->curso }} | {{ $grupo->docente }} |
                         {{ $grupo->horario }}
                     </option>
-                @endforeach
+                @empty
+                    <option value="">No hay grupos</option>
+                @endforelse
             </x-select>
         @endif
 
