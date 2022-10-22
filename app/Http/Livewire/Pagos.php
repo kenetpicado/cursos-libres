@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Alumno;
 use App\Models\Pago;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -9,6 +10,8 @@ use Livewire\WithPagination;
 
 class Pagos extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     public $sub_id = null;
     public $alumno_id = null;
@@ -16,13 +19,15 @@ class Pagos extends Component
     public $monto = null;
     public $recibi_de = null;
 
+    public $alumno = null;
+
     protected $rules = [
         'alumno_id' => 'required|integer',
         'concepto' => 'required|max:100',
         'monto' => 'required|numeric',
         'recibi_de' => 'required|max:50',
     ];
-    
+
     public function resetFields()
     {
         $this->reset();
@@ -31,21 +36,22 @@ class Pagos extends Component
 
     public function getAlumnosProperty()
     {
-        return DB::table('alumnos')->get(['id','nombre','carnet']);
+        return DB::table('alumnos')
+            ->select(['id', 'nombre', 'carnet'])
+            ->latest('id')
+            ->paginate(20);
     }
 
     public function render()
     {
-        $pagos = DB::table('pagos')
-            ->join('alumnos', 'alumnos.id', '=', 'pagos.alumno_id')
-            ->select([
-                'pagos.*',
-                'alumnos.nombre as alumno',
-                'alumnos.carnet as carnet'
-            ])
-        ->latest('id')
-        ->paginate(20);
-        return view('livewire.pagos', compact('pagos'));
+        return view('livewire.pagos');
+    }
+
+    public function pagar($alumno_id)
+    {
+        $this->alumno_id = $alumno_id;
+        $this->alumno = Alumno::find($alumno_id, ['nombre']);
+        $this->emit('open-modal');
     }
 
     public function store()
@@ -53,11 +59,9 @@ class Pagos extends Component
         $data = $this->validate();
         Pago::updateOrCreate(['id' => $this->sub_id], $data);
 
-        session()->flash('message', $this->sub_id ? config ('app.updated') : config('app.created'));
+        session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
 
         $this->resetFields();
         $this->emit('close-modal');
-
-
     }
 }

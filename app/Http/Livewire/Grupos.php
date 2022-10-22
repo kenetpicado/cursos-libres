@@ -5,9 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\Grupo;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Grupos extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $sub_id = null;
     public $anyo = null;
     public $estado = null;

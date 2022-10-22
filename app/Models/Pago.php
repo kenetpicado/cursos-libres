@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pago extends Model
 {
     use HasFactory;
-    protected $fillable = ['alumno_id', 'concepto', 'monto', 'recibi_de'];
+    protected $fillable = ['alumno_id', 'grupo_id', 'concepto', 'monto', 'recibi_de'];
 
     public function setConceptoAttribute($value)
     {
         $this->attributes['concepto'] = trim(strtoupper($value));
     }
 
-    public function setRecibi_deAttribute($value)
+    public function setRecibiDeAttribute($value)
     {
         $this->attributes['recibi_de'] = trim(strtoupper($value));
     }

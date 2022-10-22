@@ -3,7 +3,7 @@
 <div class="mb-3">
     <label class="form-label">{{ ucfirst($label) }}</label>
 
-    <select wire:model.defer="{{ $name }}" name="{{ $name }}" class="form-control @error($name) is-invalid @enderror">
+    <select wire:model="{{ $name }}" name="{{ $name }}" class="form-control @error($name) is-invalid @enderror">
         {{$slot}}
     </select>
 
