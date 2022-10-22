@@ -22,6 +22,13 @@
         .btn {
             min-width: 5rem;
         }
+
+        th {
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: rgb(109, 109, 109);
+        }
+
         @media screen and (max-width: 800px) {
 
             tbody,
