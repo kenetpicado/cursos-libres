@@ -19,7 +19,7 @@ class Pagos extends Component
     public $monto = null;
     public $recibi_de = null;
 
-    public $alumno = null;
+    public $search = null;
 
     protected $rules = [
         'alumno_id' => 'required|integer',
@@ -34,12 +34,23 @@ class Pagos extends Component
         $this->resetErrorBag();
     }
 
+    /* Todos los alumnos */
     public function getAlumnosProperty()
     {
         return DB::table('alumnos')
             ->select(['id', 'nombre', 'carnet'])
             ->latest('id')
+            ->when($this->search, function ($q) {
+                $q->where('carnet', 'like', '%' . $this->search . '%')
+                    ->orWhere('nombre', 'like', '%' . $this->search . '%');
+            })
             ->paginate(20);
+    }
+
+    /* Un alumno */
+    public function getAlumnoProperty()
+    {
+        return DB::table('alumnos')->find($this->alumno_id, ['id', 'nombre']);
     }
 
     public function render()
@@ -50,7 +61,6 @@ class Pagos extends Component
     public function pagar($alumno_id)
     {
         $this->alumno_id = $alumno_id;
-        $this->alumno = Alumno::find($alumno_id, ['nombre']);
         $this->emit('open-modal');
     }
 

@@ -5,20 +5,26 @@
 
     <x-modal label="Pagar">
         <div class="mb-2">Registrar nuevo pago del alumno:</div>
-        <h6 class="mb-3">{{ $alumno->nombre ?? '' }}</h6>
+        <h6 class="mb-3">{{ $this->alumno->nombre ?? '' }}</h6>
         <x-input name="concepto"></x-input>
         <div class="row">
             <div class="col">
                 <x-input name="monto" type="number"></x-input>
             </div>
             <div class="col">
-                <x-input name="recibi_de"></x-input>
+                <x-input name="recibi_de" label="Recibi de"></x-input>
             </div>
         </div>
     </x-modal>
 
     <div class="card-body">
         <x-message></x-message>
+
+        <div class="row mb-3">
+            <div class="col-lg-3">
+                <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
+            </div>
+        </div>
 
         <x-table>
             @slot('header')
