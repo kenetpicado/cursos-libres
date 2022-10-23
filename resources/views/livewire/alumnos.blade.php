@@ -48,7 +48,6 @@
             @slot('header')
                 <th>#</th>
                 <th>Carnet</th>
-                <th>Fecha matricula</th>
                 <th>Nombre</th>
                 <th>Celular</th>
                 <th>Acciones</th>
@@ -57,16 +56,16 @@
                 <tr>
                     <td data-title="#">{{ $alumno->id }}</td>
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
-                    <td data-title="Fecha matricula">{{ $alumno->created_at }}</td>
                     <td data-title="Nombre">{{ $alumno->nombre }}</td>
                     <td data-title="Celular">{{ $alumno->celular }}</td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 Acciones
                             </button>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="">Hoja de matrícula</a>
                                 <li><button class="dropdown-item" wire:click="edit({{ $alumno->id }})">Editar</button>
                                 </li>
                                 <li><button class="dropdown-item"
@@ -78,7 +77,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5">No hay registros</td>
+                    <td colspan="5" class="text-center">No hay registros</td>
                 </tr>
             @endforelse
         </x-table>

@@ -24,7 +24,8 @@ class CreateInscripcionsTable extends Migration
             $table->unsignedBigInteger('alumno_id');
             $table->foreign('alumno_id')
                 ->references('id')
-                ->on('alumnos');
+                ->on('alumnos')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });

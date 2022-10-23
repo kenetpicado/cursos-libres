@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Alumno;
 use App\Models\Grupo;
 use App\Models\Inscripcion;
 use Illuminate\Support\Facades\DB;
@@ -85,7 +86,9 @@ class GrupoShow extends Component
                 'grupo_id' => $this->grupo_id,
                 'alumno_id' => $id
             ]);
-            session()->flash('added', config('app.added'));
+
+            $alumno = Alumno::find($id, ['nombre']);
+            session()->flash('added', config('app.added') . ": " . $alumno->nombre);
         }
     }
 

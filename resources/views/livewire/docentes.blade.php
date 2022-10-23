@@ -3,12 +3,17 @@
 
     <x-modal label="Agregar Docente">
         <x-input name="nombre"></x-input>
-        <x-input name="celular" type="number"></x-input>
-
-        <x-select name="tipo_pago" label="Tipo de pago">
-            <option value="PORCENTAJE">PORCENTAJE</option>
-            <option value="FIJO">FIJO</option>
-        </x-select>
+        <div class="row">
+            <div class="col">
+                <x-input name="celular" type="number"></x-input>
+            </div>
+            <div class="col">
+                <x-select name="tipo_pago" label="Tipo de pago">
+                    <option value="PORCENTAJE">PORCENTAJE</option>
+                    <option value="FIJO">FIJO</option>
+                </x-select>
+            </div>
+        </div>
 
         <x-input name="viatico"></x-input>
         <x-select name="estado">
@@ -35,12 +40,12 @@
                     <td data-title="Nombre">{{ $docente->nombre }}</td>
                     <td data-title="Celular">{{ $docente->celular }}</td>
                     <td data-title="Estado">{{ $docente->estado ? 'Activo' : 'Inactivo' }}</td>
-                    <td data-title="Acción">
+                    <td>
                         <button wire:click="edit({{ $docente->id }})" class="btn btn-sm btn-primary">Editar</button>
                     </td>
-                    <td data-title="Acción"> <button
-                        onclick="delete_element('{{ $docente->id }}', '{{ $docente->nombre }}')" type="button"
-                        class="btn btn-sm btn-secondary">Eliminar</button></td>
+                    <td> <button
+                            onclick="delete_element('{{ $docente->id }}', '{{ $docente->nombre }}')" type="button"
+                            class="btn btn-sm btn-secondary">Eliminar</button></td>
                 </tr>
             @empty
                 <tr>

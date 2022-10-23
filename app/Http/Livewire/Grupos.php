@@ -14,7 +14,7 @@ class Grupos extends Component
 
     public $sub_id = null;
     public $anyo = null;
-    public $estado = null;
+    public $estado = 1;
     public $horario = null;
     public $duracion = null;
     public $curso_id = null;
@@ -33,7 +33,8 @@ class Grupos extends Component
         'horario' => 'required|max:50',
         'duracion' => 'required|max:50',
         'curso_id' => 'required|integer',
-        'docente_id' => 'required|integer'
+        'docente_id' => 'required|integer',
+        'estado' => 'required|in:1,0'
     ];
 
     public function mount()
@@ -62,6 +63,7 @@ class Grupos extends Component
                 'docentes.nombre as docente',
                 DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
             ])
+            ->orderBy('estado', 'desc')
             ->latest('id')
             ->paginate(20);
 
@@ -87,7 +89,8 @@ class Grupos extends Component
         $this->horario = $grupo->horario;
         $this->duracion = $grupo->duracion;
         $this->curso_id = $grupo->curso_id;
-        $this->docente_id = $grupo->docente_id; 
+        $this->docente_id = $grupo->docente_id;
+        $this->estado = $grupo->estado;
         $this->emit('open-modal');
     }
 

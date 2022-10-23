@@ -20,7 +20,7 @@ class Alumnos extends Component
     public $nombre = null;
     public $edad = null;
     public $celular = null;
-    public $ciudad = null;
+    public $ciudad = 'LEON';
     public $comunidad = null;
     public $direccion = null;
 
@@ -41,6 +41,8 @@ class Alumnos extends Component
         return DB::table('grupos')
             ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
             ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
+            ->where('grupos.anyo', date('Y'))
+            ->where('grupos.estado', '1')
             ->get([
                 'grupos.id',
                 'grupos.horario',
@@ -61,8 +63,7 @@ class Alumnos extends Component
             'id',
             'nombre',
             'carnet',
-            'celular',
-            'created_at'
+            'celular'
         ])
             ->latest('id')
             ->paginate(20);

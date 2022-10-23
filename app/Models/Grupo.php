@@ -10,7 +10,6 @@ class Grupo extends Model
     use HasFactory;
     protected $fillable = [
         'anyo',
-        'estado',
         'horario',
         'duracion',
         'curso_id',

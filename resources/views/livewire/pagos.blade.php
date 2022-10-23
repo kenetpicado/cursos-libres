@@ -39,22 +39,23 @@
                 <th>#</th>
                 <th>carnet</th>
                 <th>alumno</th>
-                <th colspan="2">Acciones</th>
+                <th>Acción</th>
+                <th>Acción</th>
             @endslot
             @forelse ($this->alumnos as $alumno)
                 <tr>
                     <td data-title="#">{{ $alumno->id }}</td>
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
                     <td data-title="Alumno">{{ $alumno->nombre }}</td>
-                    <td data-title="Accion">
+                    <td>
                         <button wire:click="pagar({{ $alumno->id }})" class="btn btn-sm btn-success">
                             Pagar <i class="fas fa-dollar-sign"></i>
                         </button>
                     </td>
-                    <td data-title="Accion">
-                        <button class="btn btn-sm btn-primary">
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{{ route('pagos.show', $alumno->id) }}">
                             Ver pagos
-                        </button>
+                        </a>
                     </td>
                 </tr>
             @empty

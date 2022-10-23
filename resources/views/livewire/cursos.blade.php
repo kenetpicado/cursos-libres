@@ -26,10 +26,10 @@
                     <td data-title="ID">{{ $curso->id }}</td>
                     <td data-title="Nombre">{{ $curso->nombre }}</td>
                     <td data-title="Estado">{{ $curso->estado ? 'Activo' : 'Inactivo' }}</td>
-                    <td data-title="Acción">
+                    <td>
                         <button wire:click="edit({{ $curso->id }})" class="btn btn-sm btn-primary">Editar</button>
                     </td>
-                    <td data-title="Acción"> <button
+                    <td> <button
                             onclick="delete_element('{{ $curso->id }}', '{{ $curso->nombre }}')" type="button"
                             class="btn btn-sm btn-secondary">Eliminar</button></td>
                 </tr>
