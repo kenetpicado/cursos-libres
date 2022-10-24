@@ -83,11 +83,11 @@ class Alumnos extends Component
             Alumno::find($this->sub_id)->update($data);
 
         } else {
-            $alumno = Alumno::create($data);
-
             $this->validate([
                 'grupo_id' => 'required'
             ]);
+
+            $alumno = Alumno::create($data);
 
             Inscripcion::create([
                 'grupo_id' => $this->grupo_id,
