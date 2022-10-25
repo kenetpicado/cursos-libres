@@ -31,5 +31,8 @@ class DatabaseSeeder extends Seeder
         //docentes
         \App\Models\Docente::factory(50)->create();
 
+        //grupos
+        \App\Models\Grupo::factory(10)->create();
+
     }
 }
