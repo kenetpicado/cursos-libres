@@ -19,7 +19,7 @@ class GrupoFactory extends Factory
             'duracion' => $this->faker->time('H:i:s', 'now'),
             'curso_id' => $this->faker->numberBetween(1, 10),
             'docente_id' => $this->faker->numberBetween(1, 50),
-            'estado' => $this->faker->boolean(50),
+            'estado' => $this->faker->boolean(),
         ];
     }
 }

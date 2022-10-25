@@ -37,7 +37,11 @@ class Cursos extends Component
     /* Show View */
     public function render()
     {
-        $cursos = DB::table('cursos')->latest('id')->paginate(20);
+        $cursos = DB::table('cursos')
+            ->orderBy('estado', 'desc')
+            ->orderBy('nombre')
+            ->paginate(20);
+            
         return view('livewire.cursos', compact('cursos'));
     }
 

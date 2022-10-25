@@ -24,15 +24,20 @@ class Pagos extends Component
 
     protected $rules = [
         'alumno_id' => 'required|integer',
-        'grupo_id' => 'required|integer',
+        'grupo_id' => 'nullable|integer',
         'concepto' => 'required|max:100',
         'monto' => 'required|numeric',
         'recibi_de' => 'required|max:50',
     ];
 
+    public function mount()
+    {
+        $this->recibi_de = auth()->user()->name;
+    }
+
     public function resetFields()
     {
-        $this->reset();
+        $this->resetExcept(['recibi_de']);
         $this->resetErrorBag();
     }
 

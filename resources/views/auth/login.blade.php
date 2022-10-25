@@ -32,7 +32,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-light">
     <main class="form-signin w-100 m-auto">
         <form method="POST" action="{{ route('login') }}">
             @csrf

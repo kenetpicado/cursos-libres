@@ -1,3 +1,8 @@
+@section('bread')
+    <li class="breadcrumb-item"><a href="{{ route('grupos') }}">Grupos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Alumnos</li>
+@endsection
+
 <div class="card">
     <x-header-modal label="Grupo" btn="Agregar Alumno" modal="modal2"></x-header-modal>
 
@@ -37,12 +42,6 @@
             @endforelse
         </x-table>
     </x-modal2>
-
-    <style>
-        .small-font {
-            font-size: 0.8rem;
-        }
-    </style>
 
     <div class="card-body">
         <x-message></x-message>

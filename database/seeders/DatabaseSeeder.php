@@ -22,9 +22,6 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
 
-        //alumnos
-        \App\Models\Alumno::factory(50)->create();
-
         //cursos
         \App\Models\Curso::factory(10)->create();
 
@@ -34,5 +31,9 @@ class DatabaseSeeder extends Seeder
         //grupos
         \App\Models\Grupo::factory(10)->create();
 
+        //alumnos
+        \App\Models\Alumno::factory(100)->create();
+
+        \App\Models\Inscripcion::factory(50)->create();
     }
 }

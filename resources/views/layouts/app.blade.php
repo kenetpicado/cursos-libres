@@ -29,6 +29,14 @@
             color: rgb(109, 109, 109);
         }
 
+        a {
+            text-decoration: none;
+        }
+
+        .small-font {
+            font-size: 0.8rem;
+        }
+
         @media screen and (max-width: 800px) {
 
             tbody,
@@ -63,6 +71,12 @@
         @include('partials.sidebar')
 
         <main class="container my-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('index') }}">Inicio</a></li>
+                    @yield('bread')
+                </ol>
+            </nav>
             {{ $slot }}
         </main>
     </div>

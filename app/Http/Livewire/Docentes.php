@@ -37,7 +37,11 @@ class Docentes extends Component
 
     public function render()
     {
-        $docentes = DB::table('docentes')->paginate(10);
+        $docentes = DB::table('docentes')
+            ->orderBy('estado', 'desc')
+            ->orderBy('nombre')
+            ->paginate(20);
+
         return view('livewire.docentes', compact('docentes'));
     }
 
@@ -60,7 +64,7 @@ class Docentes extends Component
         $this->celular = $docente->celular;
         $this->tipo_pago = $docente->tipo_pago;
         $this->viatico = $docente->viatico;
-        $this->estado = $docente->estado; 
+        $this->estado = $docente->estado;
         $this->emit('open-modal');
     }
 

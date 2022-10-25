@@ -1,3 +1,7 @@
+@section('bread')
+    <li class="breadcrumb-item active" aria-current="page">Alumnos</li>
+@endsection
+
 <div class="card">
     <x-header-modal label="Alumnos"></x-header-modal>
 
@@ -38,7 +42,6 @@
                 @endforelse
             </x-select>
         @endif
-
     </x-modal>
 
     <div class="card-body">

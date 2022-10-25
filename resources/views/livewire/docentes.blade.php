@@ -27,7 +27,6 @@
 
         <x-table>
             @slot('header')
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Celular</th>
                 <th>Estado</th>
@@ -36,16 +35,21 @@
             @endslot
             @forelse ($docentes as $docente)
                 <tr>
-                    <td data-title="ID">{{ $docente->id }}</td>
-                    <td data-title="Nombre">{{ $docente->nombre }}</td>
+                    <td data-title="Nombre">
+                        @if ($docente->estado == 1)
+                            <i class="fas fa-circle fa-sm text-primary"></i>
+                        @else
+                            <i class="fas fa-circle fa-sm text-danger"></i>
+                        @endif
+                        {{ $docente->nombre }}
+                    </td>
                     <td data-title="Celular">{{ $docente->celular }}</td>
                     <td data-title="Estado">{{ $docente->estado ? 'Activo' : 'Inactivo' }}</td>
                     <td>
                         <button wire:click="edit({{ $docente->id }})" class="btn btn-sm btn-primary">Editar</button>
                     </td>
-                    <td> <button
-                            onclick="delete_element('{{ $docente->id }}', '{{ $docente->nombre }}')" type="button"
-                            class="btn btn-sm btn-secondary">Eliminar</button></td>
+                    <td> <button onclick="delete_element('{{ $docente->id }}', '{{ $docente->nombre }}')"
+                            type="button" class="btn btn-sm btn-secondary">Eliminar</button></td>
                 </tr>
             @empty
                 <tr>

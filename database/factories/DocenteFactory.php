@@ -16,9 +16,9 @@ class DocenteFactory extends Factory
         return [
             'nombre' => $this->faker->name,
             'celular' => $this->faker->regexify('[0-9]{8}'),
-            'tipo_pago' => $this->faker->randomElement(['porcentaje', 'fijo']),
+            'tipo_pago' => $this->faker->randomElement(['PORCENTAJE', 'FIJO']),
             'viatico' => $this->faker->randomElement(['si', 'no']),
-            'estado' => $this->faker->boolean(50),
+            'estado' => $this->faker->boolean(),
         ];
     }
 }
