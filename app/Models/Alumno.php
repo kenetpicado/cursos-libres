@@ -34,4 +34,9 @@ class Alumno extends Model
     {
         return date('d-m-y', strtotime($value));
     }
+
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class);
+    }
 }

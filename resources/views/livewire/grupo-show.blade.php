@@ -43,6 +43,30 @@
         </x-table>
     </x-modal2>
 
+    <button type="button" id="btn-open-modal-pagar" class="d-none" data-bs-toggle="modal" data-bs-target="#createModal"></button>
+
+    <x-modal label="Pagar">
+        <div class="mb-2">Registrar nuevo pago del alumno:</div>
+        <h6 class="mb-3">{{ $this->alumno->nombre ?? '' }}</h6>
+        <x-input name="concepto"></x-input>
+        <div class="row">
+            <div class="col">
+                <x-input name="monto" type="number"></x-input>
+            </div>
+            <div class="col">
+                <x-input name="recibi_de" label="Recibi de"></x-input>
+            </div>
+        </div>
+        <x-select name="grupo_id" label="Grupo">
+            <option value="">Seleccionar</option>
+            @forelse ($this->inscripciones as $inscripcion)
+                <option value="{{ $inscripcion->grupo_id }}">{{ $inscripcion->nombre }}</option>
+            @empty
+                <option value="">No hay inscripciones</option>
+            @endforelse
+        </x-select>
+    </x-modal>
+
     <div class="card-body">
         <x-message></x-message>
 
@@ -57,25 +81,37 @@
             @slot('header')
                 <th>Carnet</th>
                 <th>Nombre</th>
+                <th>Acción</th>
                 <th>Acciones</th>
             @endslot
-            @forelse ($this->inscripciones as $inscripcion)
+            @forelse ($this->alumnos as $alumno)
                 <tr>
-                    <td data-title="Carnet">{{ $inscripcion->carnet }}</td>
-                    <td data-title="Nombre">{{ $inscripcion->nombre }}</td>
+                    <td data-title="Carnet">{{ $alumno->carnet }}</td>
+                    <td data-title="Nombre">{{ $alumno->nombre }}</td>
+                    <td>
+                        <button wire:click="pagar({{ $alumno->alumno_id }})" class="btn btn-sm btn-primary">
+                            Pagar
+                        </button>
+                    </td>
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 Acciones
                             </button>
                             <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('pagos.show', $alumno->id) }}">
+                                        Ver pagos
+                                    </a>
+                                </li>
                                 {{-- <li><button class="dropdown-item" wire:click="edit({{ $alumno->id }})">Editar</button></li> --}}
                                 <li>
                                     <button class="dropdown-item"
-                                        onclick="delete_element('{{ $inscripcion->id }}', '{{ $inscripcion->nombre }}')">Eliminar
+                                        onclick="delete_element('{{ $alumno->id }}', '{{ $alumno->nombre }}')">Eliminar
                                         del grupo</button>
                                 </li>
+                               
                             </ul>
                         </div>
                     </td>
@@ -86,6 +122,6 @@
                 </tr>
             @endforelse
         </x-table>
-        {{ $this->inscripciones->links() }}
+        {{ $this->alumnos->links() }}
     </div>
 </div>

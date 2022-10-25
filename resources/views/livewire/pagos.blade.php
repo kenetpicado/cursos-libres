@@ -48,12 +48,12 @@
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
                     <td data-title="Alumno">{{ $alumno->nombre }}</td>
                     <td>
-                        <button wire:click="pagar({{ $alumno->id }})" class="btn btn-sm btn-success">
-                            Pagar <i class="fas fa-dollar-sign"></i>
+                        <button wire:click="pagar({{ $alumno->id }})" class="btn btn-sm btn-primary">
+                            Pagar
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{{ route('pagos.show', $alumno->id) }}">
+                        <a href="{{ route('pagos.show', $alumno->id) }}">
                             Ver pagos
                         </a>
                     </td>

@@ -22,7 +22,7 @@
             </ul>
 
             <div class="nav-item dropdown">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button"
+                <a class="nav-link text-primary fw-bolder" href="#" id="navbarDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     {{ Auth::user()->name ?? '' }}
                 </a>

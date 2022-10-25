@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Alumno;
 use App\Models\Inscripcion;
+use App\Traits\AlumnosTraits;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class Alumnos extends Component
 {
     use WithPagination;
+    use AlumnosTraits;
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = ['delete_element'];
@@ -23,6 +25,8 @@ class Alumnos extends Component
     public $ciudad = 'LEON';
     public $comunidad = null;
     public $direccion = null;
+
+    public $search = null;
 
     public $grupo_id = null;
 
@@ -59,16 +63,7 @@ class Alumnos extends Component
 
     public function render()
     {
-        $alumnos = Alumno::select([
-            'id',
-            'nombre',
-            'carnet',
-            'celular'
-        ])
-            ->latest('id')
-            ->paginate(20);
-
-        return view('livewire.alumnos', compact('alumnos'));
+        return view('livewire.alumnos');
     }
 
     /* Update or Create */
@@ -81,7 +76,6 @@ class Alumnos extends Component
         if ($this->sub_id) {
             unset($data['carnet']);
             Alumno::find($this->sub_id)->update($data);
-
         } else {
             $this->validate([
                 'grupo_id' => 'required'
@@ -116,8 +110,14 @@ class Alumnos extends Component
 
     public function delete_element($alumno_id)
     {
-        Alumno::find($alumno_id)->delete();
-        session()->flash('message', config('app.deleted'));
+        $alumno = Alumno::find($alumno_id);
+
+        if ($alumno->pagos()->count() > 0)
+            session()->flash('message', config('app.undeleted'));
+        else {
+            $alumno->delete();
+            session()->flash('message', config('app.deleted'));
+        }
     }
 
     public function generateCarnet($ciudad)

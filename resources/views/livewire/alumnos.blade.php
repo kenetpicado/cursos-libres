@@ -46,21 +46,23 @@
 
     <div class="card-body">
         <x-message></x-message>
-
+        <div class="row mb-3">
+            <div class="col-lg-3">
+                <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
+            </div>
+        </div>
         <x-table>
             @slot('header')
                 <th>#</th>
                 <th>Carnet</th>
                 <th>Nombre</th>
-                <th>Celular</th>
                 <th>Acciones</th>
             @endslot
-            @forelse ($alumnos as $alumno)
+            @forelse ($this->alumnos as $alumno)
                 <tr>
                     <td data-title="#">{{ $alumno->id }}</td>
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
                     <td data-title="Nombre">{{ $alumno->nombre }}</td>
-                    <td data-title="Celular">{{ $alumno->celular }}</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="dropdown"
@@ -84,6 +86,6 @@
                 </tr>
             @endforelse
         </x-table>
-        {{ $alumnos->links() }}
+        {{ $this->alumnos->links() }}
     </div>
 </div>

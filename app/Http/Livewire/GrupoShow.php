@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Alumno;
 use App\Models\Grupo;
 use App\Models\Inscripcion;
+use App\Models\Pago;
+use App\Traits\PagosTraits;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -13,6 +15,13 @@ class GrupoShow extends Component
     public $grupo_id = null;
     public $temp = null;
     public $search = null;
+    use PagosTraits;
+
+    public $concepto = null;
+    public $monto = null;
+    public $recibi_de = null;
+
+    public $alumno_id = null;
 
     protected $listeners = ['delete_element', 'inscribir'];
 
@@ -22,12 +31,22 @@ class GrupoShow extends Component
         $this->resetErrorBag();
     }
 
+    protected $rules = [
+        'alumno_id' => 'required|integer',
+        'grupo_id' => 'nullable|integer',
+        'concepto' => 'required|max:100',
+        'monto' => 'required|numeric',
+        'recibi_de' => 'required|max:50',
+    ];
+
     public function mount($id)
     {
         $this->grupo_id = $id;
+        $this->recibi_de = auth()->user()->name;
     }
 
-    public function getInscripcionesProperty()
+    /* Obtener los alumnos de un grupo */
+    public function getAlumnosProperty()
     {
         return DB::table('inscripcions')
             ->where('grupo_id', $this->grupo_id)
@@ -90,6 +109,23 @@ class GrupoShow extends Component
             $alumno = Alumno::find($id, ['nombre']);
             session()->flash('added', config('app.added') . ": " . $alumno->nombre);
         }
+    }
+
+    public function pagar($alumno_id)
+    {
+        $this->alumno_id = $alumno_id;
+        $this->emit('open-modal-pagar');
+    }
+
+    public function store()
+    {
+        $data = $this->validate();
+        Pago::create($data);
+
+        session()->flash('message', config('app.created'));
+
+        $this->resetFields();
+        $this->emit('close-modal');
     }
 
     public function delete_element($inscripcion_id)

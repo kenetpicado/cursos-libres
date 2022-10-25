@@ -93,6 +93,10 @@
             document.getElementById('btn-open-modal').click();
         });
 
+        Livewire.on('open-modal-pagar', function() {
+            document.getElementById('btn-open-modal-pagar').click();
+        });
+
         Livewire.on('close-modal', function() {
             document.getElementById('btn-close-modal').click();
         });

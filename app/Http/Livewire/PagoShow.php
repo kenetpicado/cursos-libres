@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Traits\PagosTraits;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -9,6 +10,7 @@ use Livewire\WithPagination;
 class PagoShow extends Component
 {
     use WithPagination;
+    use PagosTraits;
     protected $paginationTheme = 'bootstrap';
 
     public $alumno_id;
@@ -24,11 +26,6 @@ class PagoShow extends Component
             ->where('alumno_id', $this->alumno_id)
             ->latest('id')
             ->paginate(20);
-    }
-
-    public function getAlumnoProperty()
-    {
-        return DB::table('alumnos')->find($this->alumno_id, ['nombre']);
     }
 
     public function render()

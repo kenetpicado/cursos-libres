@@ -21,7 +21,10 @@
                     <td data-title="Concepto">{{ $pago->concepto }}</td>
                     <td data-title="Monto">C$ {{ $pago->monto }}</td>
                     <td data-title="Fecha">{{ $pago->created_at }}</td>
-                    <td><button class="btn btn-primary btn-sm" type="button">Recibo</button></td>
+                    <td>
+                        <a href="http://" target="_blank">Recibo oficial</a> |
+                        <a href="http://" target="_blank">Recibo no oficial</a>
+                    </td>
                 </tr>
             @empty
                 <tr>
