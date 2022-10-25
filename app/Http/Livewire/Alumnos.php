@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Alumno;
 use App\Models\Inscripcion;
+use App\Models\Pago;
 use App\Traits\AlumnosTraits;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -25,6 +26,8 @@ class Alumnos extends Component
     public $ciudad = 'LEON';
     public $comunidad = null;
     public $direccion = null;
+
+    public $monto = null;
 
     public $search = null;
 
@@ -77,15 +80,27 @@ class Alumnos extends Component
             unset($data['carnet']);
             Alumno::find($this->sub_id)->update($data);
         } else {
+            /* Si es nuevo registro validar campos necesarios */
             $this->validate([
-                'grupo_id' => 'required'
+                'grupo_id' => 'required',
+                'monto' => 'required|numeric'
             ]);
 
             $alumno = Alumno::create($data);
 
+            /* Crear la inscripcion al grupo */
             Inscripcion::create([
                 'grupo_id' => $this->grupo_id,
                 'alumno_id' => $alumno->id,
+            ]);
+
+            /* Generar el pago de matricula */
+            Pago::create([
+                'alumno_id' => $alumno->id,
+                'grupo_id' => $this->grupo_id, 
+                'concepto' => "PAGO DE MATRICULA", 
+                'monto' => $this->monto, 
+                'recibi_de' => auth()->user()->name,
             ]);
         }
 

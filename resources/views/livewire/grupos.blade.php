@@ -35,7 +35,11 @@
 
     <div class="card-body">
         <x-message></x-message>
-
+        <div class="row mb-3">
+            <div class="col-lg-3">
+                <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
+            </div>
+        </div>
         <x-table>
             @slot('header')
                 <th>ID</th>
@@ -45,7 +49,7 @@
                 <th>Alumnos</th>
                 <th>Acción</th>
             @endslot
-            @forelse ($grupos as $grupo)
+            @forelse ($this->grupos as $grupo)
                 <tr>
                     <td data-title="ID">{{ $grupo->id }}</td>
                     <td data-title="Curso">
@@ -88,6 +92,6 @@
                 </tr>
             @endforelse
         </x-table>
-        {{ $grupos->links() }}
+        {{ $this->grupos->links() }}
     </div>
 </div>

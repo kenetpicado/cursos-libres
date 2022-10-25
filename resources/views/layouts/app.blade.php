@@ -37,6 +37,16 @@
             font-size: 0.8rem;
         }
 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
         @media screen and (max-width: 800px) {
 
             tbody,

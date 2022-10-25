@@ -8,27 +8,36 @@
     <x-modal label="Agregar Alumno">
         <x-input name="nombre"></x-input>
         <div class="row">
-            <div class="col">
+            <div class="col-lg-6">
                 <x-input name="edad" type="number"></x-input>
             </div>
-            <div class="col">
+            <div class="col-lg-6">
                 <x-input name="celular" type="number"></x-input>
             </div>
         </div>
 
         <div class="row">
-            <div class="col">
+            <div class="col-lg-6">
                 <x-select name="ciudad">
                     <option value="" disabled>Seleccionar</option>
                     <option value="LEON">LEON</option>
                     <option value="CHINANDEGA">CHINANDEGA</option>
                 </x-select>
             </div>
-            <div class="col">
+            <div class="col-lg-6">
                 <x-input name="comunidad"></x-input>
             </div>
         </div>
-        <x-input name="direccion"></x-input>
+        <div class="row">
+            <div class="col-lg-6">
+                <x-input name="direccion"></x-input>
+            </div>
+            @if (!$sub_id)
+                <div class="col-lg-6">
+                    <x-input name="monto" label="Monto matricula (C$)"></x-input>
+                </div>
+            @endif
+        </div>
 
         @if (!$sub_id)
             <x-select name="grupo_id" label="Inscribir a">

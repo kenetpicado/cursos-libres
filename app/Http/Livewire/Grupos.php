@@ -20,6 +20,8 @@ class Grupos extends Component
     public $curso_id = null;
     public $docente_id = null;
 
+    public $search = null;
+
     protected $listeners = ['delete_element'];
 
     public function resetFields()
@@ -52,9 +54,9 @@ class Grupos extends Component
         return DB::table('docentes')->where('estado', '1')->get(['id', 'nombre']);
     }
 
-    public function render()
+    public function getGruposProperty()
     {
-        $grupos = DB::table('grupos')
+        return DB::table('grupos')
             ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
             ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
             ->select([
@@ -65,9 +67,16 @@ class Grupos extends Component
             ])
             ->orderBy('estado', 'desc')
             ->latest('id')
+            ->when($this->search, function ($q) {
+                $q->where('cursos.nombre', 'like', '%' . $this->search . '%')
+                    ->orWhere('docentes.nombre', 'like', '%' . $this->search . '%');
+            })
             ->paginate(20);
+    }
 
-        return view('livewire.grupos', compact('grupos'));
+    public function render()
+    {
+        return view('livewire.grupos');
     }
 
     public function store()
