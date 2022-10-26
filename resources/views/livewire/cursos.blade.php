@@ -1,3 +1,6 @@
+@section('bread')
+    <li class="breadcrumb-item active" aria-current="page">Cursos</li>
+@endsection
 <div class="card">
     <x-header-modal label="Cursos"></x-header-modal>
 
