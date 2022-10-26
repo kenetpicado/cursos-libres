@@ -1,3 +1,7 @@
+@section('bread')
+    <li class="breadcrumb-item"><a href="{{ route('grupos') }}">Pagos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Efectuados</li>
+@endsection
 <div class="card">
     <x-header label="Pagos"></x-header>
 
