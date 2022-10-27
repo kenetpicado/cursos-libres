@@ -16,64 +16,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     @livewireStyles
-
-    <style>
-        .btn {
-            min-width: 5rem;
-        }
-
-        th {
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            color: rgb(109, 109, 109);
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        .small-font {
-            font-size: 0.8rem;
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        @media screen and (max-width: 800px) {
-
-            tbody,
-            tr,
-            td {
-                display: block;
-            }
-
-            thead {
-                display: none;
-            }
-
-            tbody {
-                float: left;
-            }
-
-            td:before {
-                content: attr(data-title);
-                margin-right: 0.5em;
-                font-weight: bold;
-            }
-
-            tr {
-                border-top: 1px solid #aaaa;
-            }
-        }
-    </style>
 </head>
 
 <body>

@@ -14,7 +14,7 @@ class GrupoFactory extends Factory
     public function definition()
     {
         return [
-            'anyo' => $this->faker->numberBetween(2010, 2021),
+            'anyo' => "2022",
             'horario' => $this->faker->time('H:i:s', 'now'),
             'duracion' => $this->faker->time('H:i:s', 'now'),
             'curso_id' => $this->faker->numberBetween(1, 10),

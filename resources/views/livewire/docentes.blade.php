@@ -32,7 +32,6 @@
             @slot('header')
                 <th>Nombre</th>
                 <th>Celular</th>
-                <th>Estado</th>
                 <th>Acción</th>
                 <th>Acción</th>
             @endslot
@@ -40,14 +39,13 @@
                 <tr>
                     <td data-title="Nombre">
                         @if ($docente->estado == 1)
-                            <i class="fas fa-circle fa-sm text-primary"></i>
+                            <i class="fas fa-circle fa-xs text-primary"></i>
                         @else
-                            <i class="fas fa-circle fa-sm text-danger"></i>
+                            <i class="fas fa-circle fa-xs text-danger"></i>
                         @endif
                         {{ $docente->nombre }}
                     </td>
                     <td data-title="Celular">{{ $docente->celular }}</td>
-                    <td data-title="Estado">{{ $docente->estado ? 'Activo' : 'Inactivo' }}</td>
                     <td>
                         <button wire:click="edit({{ $docente->id }})" class="btn btn-sm btn-primary">Editar</button>
                     </td>
@@ -56,7 +54,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5">No hay registros</td>
+                    <td colspan="4">No hay registros</td>
                 </tr>
             @endforelse
         </x-table>

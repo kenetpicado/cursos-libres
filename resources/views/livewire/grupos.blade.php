@@ -54,9 +54,9 @@
                     <td data-title="ID">{{ $grupo->id }}</td>
                     <td data-title="Curso">
                         @if ($grupo->estado == 1)
-                            <i class="fas fa-circle fa-sm text-primary"></i>
+                            <i class="fas fa-circle fa-xs text-primary"></i>
                         @else
-                            <i class="fas fa-circle fa-sm text-danger"></i>
+                        <i class="fas fa-circle fa-xs text-danger"></i>
                         @endif
 
                         {{ $grupo->curso }}
@@ -69,21 +69,21 @@
                     </td>
                     <td>
                         <div class="m-0 p-0">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Acciones
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><button class="dropdown-item"
-                                        wire:click="edit({{ $grupo->id }})">Editar</button>
-                                </li>
-                                <li><button class="dropdown-item"
-                                        onclick="delete_element('{{ $grupo->id }}', '{{ $grupo->curso }} {{ $grupo->horario }}')">Eliminar</button>
-                                </li>
-                            </ul>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Acciones
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><button class="dropdown-item"
+                                            wire:click="edit({{ $grupo->id }})">Editar</button>
+                                    </li>
+                                    <li><button class="dropdown-item"
+                                            onclick="delete_element('{{ $grupo->id }}', '{{ $grupo->curso }} {{ $grupo->horario }}')">Eliminar</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                     </td>
                 </tr>
             @empty
