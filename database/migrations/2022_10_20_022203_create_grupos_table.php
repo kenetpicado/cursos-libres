@@ -31,7 +31,7 @@ class CreateGruposTable extends Migration
 
             $table->boolean('estado')->default(true);
                 
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

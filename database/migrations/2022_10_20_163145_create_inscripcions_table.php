@@ -27,7 +27,7 @@ class CreateInscripcionsTable extends Migration
                 ->on('alumnos')
                 ->onDelete('cascade');
 
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Pago extends Model
 {
     use HasFactory;
-    protected $fillable = ['alumno_id', 'grupo_id', 'concepto', 'monto', 'recibi_de'];
+    protected $fillable = ['alumno_id', 'grupo_id', 'concepto', 'monto', 'recibi_de', 'created_at'];
+
+    public $timestamps = false;
 
     public function setConceptoAttribute($value)
     {

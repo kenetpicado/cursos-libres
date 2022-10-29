@@ -17,7 +17,7 @@ class CreateCursosTable extends Migration
             $table->id();
             $table->string('nombre', 50);
             $table->boolean('estado')->default(true);
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

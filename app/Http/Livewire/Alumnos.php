@@ -42,6 +42,7 @@ class Alumnos extends Component
         'ciudad' => 'required|max:50',
         'comunidad' => 'required|max:50',
         'direccion' => 'required|max:70',
+        'created_at' => 'required|date',
     ];
 
     public function getGruposProperty()
@@ -83,7 +84,7 @@ class Alumnos extends Component
         $data = $this->validate();
 
         if ($this->sub_id) {
-            unset($data['carnet']);
+            unset($data['carnet'], $data['created_at']);
             Alumno::find($this->sub_id)->update($data);
         } else {
             /* Si es nuevo registro validar campos necesarios */
@@ -107,7 +108,8 @@ class Alumnos extends Component
                 'concepto' => "PAGO DE MATRICULA", 
                 'monto' => $this->monto, 
                 'recibi_de' => auth()->user()->name,
-            ]);
+                'created_at' => $this->created_at
+            ]); 
         }
 
         session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
