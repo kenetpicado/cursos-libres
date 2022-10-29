@@ -20,7 +20,6 @@ class CreateDocentesTable extends Migration
             $table->string('tipo_pago', 20);
             $table->string('viatico', 10);
             $table->boolean('estado')->default(true);
-            $table->timestamps();
         });
     }
 

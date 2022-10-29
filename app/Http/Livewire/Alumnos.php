@@ -26,6 +26,7 @@ class Alumnos extends Component
     public $ciudad = 'LEON';
     public $comunidad = null;
     public $direccion = null;
+    public $created_at = null;
 
     public $monto = null;
 
@@ -58,9 +59,14 @@ class Alumnos extends Component
             ]);
     }
 
+    public function mount()
+    {
+        $this->created_at = now()->format('Y-m-d');
+    }
+
     public function resetFields()
     {
-        $this->reset();
+        $this->resetExcept(['created_at']);
         $this->resetErrorBag();
     }
 

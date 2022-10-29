@@ -22,7 +22,7 @@ class CreateAlumnosTable extends Migration
             $table->string('ciudad', 50);
             $table->string('comunidad', 50);
             $table->string('direccion', 70);
-            $table->timestamps();
+            $table->date('created_at');
         });
     }
 

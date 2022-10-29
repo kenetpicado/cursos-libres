@@ -10,6 +10,8 @@ class Alumno extends Model
     use HasFactory;
     protected $fillable = ['carnet', 'nombre', 'edad', 'celular', 'ciudad', 'comunidad', 'direccion'];
 
+    public $timestamps = false;
+    
     public function setNombreAttribute($value)
     {
         $this->attributes['nombre'] = trim(strtoupper($value));

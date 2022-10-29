@@ -16,6 +16,8 @@ class Docente extends Model
         'estado'
     ];
 
+   public $timestamps = false;
+
     public function setNombreAttribute($value)
     {
         $this->attributes['nombre'] = trim(strtoupper($value));
