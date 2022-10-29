@@ -32,6 +32,14 @@
 
     <div class="card-body">
         <x-message></x-message>
+        <div class="row gy-3 mb-3">
+            <div class="col-lg-3">
+                <select class="form-control" wire:model="estadosearch">
+                    <option value="1">Activos</option>
+                    <option value="false">Inactivos</option>
+                </select>
+            </div>
+        </div>
 
         <x-table>
             @slot('header')
