@@ -44,7 +44,8 @@
                 <option value="">Seleccionar Curso</option>
                 @forelse ($this->grupos as $grupo)
                     <option value="{{ $grupo->id }}">
-                        {{ $grupo->curso }} | {{ $grupo->docente }} | {{ $grupo->horario }} | {{ $grupo->inscripciones_count }}
+                        {{ $grupo->curso }} | {{ $grupo->docente }} | {{ $grupo->horario }} |
+                        {{ $grupo->inscripciones_count }}
                     </option>
                 @empty
                     <option value="">No hay grupos</option>
@@ -78,7 +79,8 @@
                                 Acciones
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="">Hoja de matrícula</a>
+                                <li><a class="dropdown-item" target="_blank" href="{{ route('hoja_matricula', $alumno->id) }}">Hoja de
+                                        matrícula</a>
                                 <li><button class="dropdown-item" wire:click="edit({{ $alumno->id }})">Editar</button>
                                 </li>
                                 <li><button class="dropdown-item"
