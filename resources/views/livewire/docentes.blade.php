@@ -17,12 +17,17 @@
                 </x-select>
             </div>
         </div>
-
-        <x-input name="viatico"></x-input>
-        <x-select name="estado">
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-        </x-select>
+        <div class="row">
+            <div class="col-lg-6">
+                <x-input name="viatico"></x-input>
+            </div>
+            <div class="col-lg-6">
+                <x-select name="estado">
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </x-select>
+            </div>
+        </div>
     </x-modal>
 
     <div class="card-body">

@@ -26,11 +26,17 @@
                 <x-input name="horario"></x-input>
             </div>
         </div>
-        <x-input name="duracion"></x-input>
-        <x-select name="estado">
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-        </x-select>
+        <div class="row">
+            <div class="col-lg-6">
+                <x-input name="duracion"></x-input>
+            </div>
+            <div class="col-lg-6">
+                <x-select name="estado">
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </x-select>
+            </div>
+        </div>
     </x-modal>
 
     <div class="card-body">
@@ -56,7 +62,7 @@
                         @if ($grupo->estado == 1)
                             <i class="fas fa-circle fa-xs text-primary"></i>
                         @else
-                        <i class="fas fa-circle fa-xs text-danger"></i>
+                            <i class="fas fa-circle fa-xs text-danger"></i>
                         @endif
 
                         {{ $grupo->curso }}
