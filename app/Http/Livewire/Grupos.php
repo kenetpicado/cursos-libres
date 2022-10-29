@@ -67,7 +67,7 @@ class Grupos extends Component
                 'docentes.nombre as docente',
                 DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
             ])
-            ->orderBy('estado', 'desc')
+            ->where('grupos.estado', '1')
             ->latest('id')
             ->when($this->search, function ($q) {
                 $q->where('cursos.nombre', 'like', '%' . $this->search . '%')

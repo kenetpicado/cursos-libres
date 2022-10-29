@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Pago;
 use App\Traits\PagosTraits;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -22,8 +23,7 @@ class PagoShow extends Component
 
     public function getPagosProperty()
     {
-        return DB::table('pagos')
-            ->where('alumno_id', $this->alumno_id)
+        return Pago::where('alumno_id', $this->alumno_id)
             ->latest('id')
             ->paginate(20);
     }
