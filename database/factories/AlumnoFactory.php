@@ -20,7 +20,8 @@ class AlumnoFactory extends Factory
             'celular' => $this->faker->numberBetween(60000000, 79999999),
             'ciudad' => $this->faker->city,
             'comunidad' => $this->faker->state,
-            'direccion' => $this->faker->address
+            'direccion' => $this->faker->address,
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

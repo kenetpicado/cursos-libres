@@ -9,4 +9,6 @@ class Inscripcion extends Model
 {
     use HasFactory;
     protected $fillable = ['alumno_id', 'grupo_id'];
+
+    public $timestamps = false;
 }

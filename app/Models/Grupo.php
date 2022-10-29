@@ -17,6 +17,8 @@ class Grupo extends Model
         'estado'
     ];
 
+    public $timestamps = false;
+
     public function setHorarioAttribute($value)
     {
         $this->attributes['horario'] = trim(strtoupper($value));

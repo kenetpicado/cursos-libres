@@ -23,6 +23,7 @@ class Pagos extends Component
     public $concepto = null;
     public $monto = null;
     public $recibi_de = null;
+    public $created_at = null;
 
     public $search = null;
 
@@ -32,16 +33,18 @@ class Pagos extends Component
         'concepto' => 'required|max:100',
         'monto' => 'required|numeric',
         'recibi_de' => 'required|max:50',
+        'created_at' => 'required|date',
     ];
 
     public function mount()
     {
         $this->recibi_de = auth()->user()->name;
+        $this->created_at = now()->format('Y-m-d');
     }
 
     public function resetFields()
     {
-        $this->resetExcept(['recibi_de']);
+        $this->resetExcept(['recibi_de', 'created_at']);	
         $this->resetErrorBag();
     }
 
@@ -66,4 +69,10 @@ class Pagos extends Component
         $this->resetFields();
         $this->emit('close-modal');
     }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('d-m-y', strtotime($value));
+    }
+
 }

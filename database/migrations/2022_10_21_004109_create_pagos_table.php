@@ -30,7 +30,8 @@ class CreatePagosTable extends Migration
                 ->on('grupos')
                 ->onDelete('set null');
 
-            $table->timestamps();
+            //$table->timestamps();
+            $table->date('created_at');
         });
     }
 
