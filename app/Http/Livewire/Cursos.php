@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Curso;
+use App\Traits\MyAlerts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class Cursos extends Component
 {
     use WithPagination;
+    use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
     public $sub_id;
@@ -41,7 +43,7 @@ class Cursos extends Component
             ->orderBy('estado', 'desc')
             ->orderBy('nombre')
             ->paginate(20);
-            
+
         return view('livewire.cursos', compact('cursos'));
     }
 
@@ -52,7 +54,7 @@ class Cursos extends Component
 
         Curso::updateOrCreate(['id' => $this->sub_id], $data);
 
-        session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
+        $this->success($this->sub_id);
 
         $this->resetFields();
         $this->emit('close-modal');
@@ -73,10 +75,10 @@ class Cursos extends Component
         $curso = Curso::find($curso_id);
 
         if ($curso->grupos()->count() > 0)
-            session()->flash('message', config('app.undeleted'));
+            $this->delete(false);
         else {
             $curso->delete();
-            session()->flash('message', config('app.deleted'));
+            $this->delete();
         }
     }
 }

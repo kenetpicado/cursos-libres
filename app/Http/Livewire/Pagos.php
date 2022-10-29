@@ -4,8 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Pago;
 use App\Traits\AlumnosTraits;
+use App\Traits\MyAlerts;
 use App\Traits\PagosTraits;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,6 +14,7 @@ class Pagos extends Component
     use WithPagination;
     use PagosTraits;
     use AlumnosTraits;
+    use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
     public $sub_id = null;
@@ -60,7 +61,7 @@ class Pagos extends Component
         $data = $this->validate();
         Pago::updateOrCreate(['id' => $this->sub_id], $data);
 
-        session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
+        $this->success($this->sub_id);
 
         $this->resetFields();
         $this->emit('close-modal');

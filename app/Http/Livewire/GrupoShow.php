@@ -6,16 +6,18 @@ use App\Models\Alumno;
 use App\Models\Grupo;
 use App\Models\Inscripcion;
 use App\Models\Pago;
+use App\Traits\MyAlerts;
 use App\Traits\PagosTraits;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class GrupoShow extends Component
 {
+    use PagosTraits;
+    use MyAlerts;
     public $grupo_id = null;
     public $temp = null;
     public $search = null;
-    use PagosTraits;
 
     public $concepto = null;
     public $monto = null;
@@ -99,7 +101,7 @@ class GrupoShow extends Component
             ->count();
 
         if ($exist > 0)
-            session()->flash('exist', config('app.exist'));
+            $this->no_added();
         else {
             Inscripcion::create([
                 'grupo_id' => $this->grupo_id,
@@ -107,7 +109,7 @@ class GrupoShow extends Component
             ]);
 
             $alumno = Alumno::find($id, ['nombre']);
-            session()->flash('added', config('app.added') . ": " . $alumno->nombre);
+            $this->added($alumno->nombre);
         }
     }
 
@@ -122,7 +124,7 @@ class GrupoShow extends Component
         $data = $this->validate();
         Pago::create($data);
 
-        session()->flash('message', config('app.created'));
+        $this->success();
 
         $this->resetFields();
         $this->emit('close-modal');
@@ -131,6 +133,6 @@ class GrupoShow extends Component
     public function delete_element($inscripcion_id)
     {
         Inscripcion::find($inscripcion_id)->delete();
-        session()->flash('message', config('app.deleted'));
+        $this->delete();
     }
 }

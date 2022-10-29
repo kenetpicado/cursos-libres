@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Inscripcion;
 use App\Models\Pago;
 use App\Traits\AlumnosTraits;
+use App\Traits\MyAlerts;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,6 +15,7 @@ class Alumnos extends Component
 {
     use WithPagination;
     use AlumnosTraits;
+    use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = ['delete_element'];
@@ -35,15 +37,15 @@ class Alumnos extends Component
     public $grupo_id = null;
 
     protected $rules = [
-        'nombre' => 'required',
-        'carnet' => 'required|max:10|unique:alumnos',
-        'edad' => 'required|integer',
-        'celular' => 'required|numeric|digits:8',
-        'ciudad' => 'required|max:50',
+        'nombre'    => 'required',
+        'carnet'    => 'required|max:10|unique:alumnos',
+        'edad'      => 'required|integer',
+        'celular'   => 'required|numeric|digits:8',
+        'ciudad'    => 'required|max:50',
         'comunidad' => 'required|max:50',
         'direccion' => 'required|max:70',
     ];
-
+    
     public function getGruposProperty()
     {
         return DB::table('grupos')
@@ -103,14 +105,14 @@ class Alumnos extends Component
             /* Generar el pago de matricula */
             Pago::create([
                 'alumno_id' => $alumno->id,
-                'grupo_id' => $this->grupo_id, 
-                'concepto' => "PAGO DE MATRICULA", 
-                'monto' => $this->monto, 
+                'grupo_id' => $this->grupo_id,
+                'concepto' => "PAGO DE MATRICULA",
+                'monto' => $this->monto,
                 'recibi_de' => auth()->user()->name,
             ]);
         }
 
-        session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
+        $this->success($this->sub_id);
 
         $this->resetFields();
         $this->emit('close-modal');
@@ -131,13 +133,13 @@ class Alumnos extends Component
 
     public function delete_element($alumno_id)
     {
-        $alumno = Alumno::find($alumno_id);
+        $alumno = Alumno::find($alumno_id, ['id']);
 
         if ($alumno->pagos()->count() > 0)
-            session()->flash('message', config('app.undeleted'));
+            $this->delete(false);
         else {
             $alumno->delete();
-            session()->flash('message', config('app.deleted'));
+            $this->delete();
         }
     }
 

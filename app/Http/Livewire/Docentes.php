@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Docente;
+use App\Traits\MyAlerts;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class Docentes extends Component
 {
     use WithPagination;
+    use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = ['delete_element'];
@@ -28,11 +30,11 @@ class Docentes extends Component
     }
 
     protected $rules = [
-        'nombre' => 'required',
-        'celular' => 'required|numeric|digits:8',
+        'nombre'    => 'required',
+        'celular'   => 'required|numeric|digits:8',
         'tipo_pago' => 'required|max:50',
-        'viatico' => 'required|max:20',
-        'estado' => 'nullable'
+        'viatico'   => 'required|max:20',
+        'estado'    => 'nullable'
     ];
 
     public function render()
@@ -50,7 +52,7 @@ class Docentes extends Component
         $data = $this->validate();
         Docente::updateOrCreate(['id' => $this->sub_id], $data);
 
-        session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
+        $this->success($this->sub_id);
 
         $this->resetFields();
         $this->emit('close-modal');
@@ -73,10 +75,10 @@ class Docentes extends Component
         $docente = Docente::find($docente_id);
 
         if ($docente->grupos()->count() > 0)
-            session()->flash('message', config('app.undeleted'));
+            $this->delete(false);
         else {
             $docente->delete();
-            session()->flash('message', config('app.deleted'));
+            $this->delete();
         }
     }
 }

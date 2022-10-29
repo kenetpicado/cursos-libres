@@ -56,7 +56,7 @@
                         </button>
                     </td>
                     <td>
-                        <a href="{{ route('pagos.show', $alumno->id) }}">
+                        <a class="btn btn-sm btn-secondary" href="{{ route('pagos.show', $alumno->id) }}">
                             Ver pagos
                         </a>
                     </td>

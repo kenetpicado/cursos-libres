@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Grupo;
+use App\Traits\MyAlerts;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class Grupos extends Component
 {
     use WithPagination;
+    use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
     public $sub_id = null;
@@ -31,12 +33,12 @@ class Grupos extends Component
     }
 
     protected $rules = [
-        'anyo' => 'required|digits:4',
-        'horario' => 'required|max:50',
-        'duracion' => 'required|max:50',
-        'curso_id' => 'required|integer',
-        'docente_id' => 'required|integer',
-        'estado' => 'required|in:1,0'
+        'anyo'      => 'required|digits:4',
+        'horario'   => 'required|max:50',
+        'duracion'  => 'required|max:50',
+        'curso_id'  => 'required|integer',
+        'docente_id'=> 'required|integer',
+        'estado'    => 'required|in:1,0'
     ];
 
     public function mount()
@@ -84,7 +86,7 @@ class Grupos extends Component
         $data = $this->validate();
         Grupo::updateOrCreate(['id' => $this->sub_id], $data);
 
-        session()->flash('message', $this->sub_id ? config('app.updated') : config('app.created'));
+        $this->success($this->sub_id);
 
         $this->resetFields();
         $this->emit('close-modal');
@@ -108,10 +110,10 @@ class Grupos extends Component
         $grupo = Grupo::find($grupo_id);
 
         if ($grupo->inscripciones()->count() > 0)
-            session()->flash('message', config('app.undeleted'));
+            $this->delete(false);
         else {
             $grupo->delete();
-            session()->flash('message', config('app.deleted'));
+            $this->delete();
         }
     }
 }
