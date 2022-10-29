@@ -56,7 +56,8 @@ class Alumnos extends Component
                 'grupos.id',
                 'grupos.horario',
                 'cursos.nombre as curso',
-                'docentes.nombre as docente'
+                'docentes.nombre as docente',
+                DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
             ]);
     }
 
