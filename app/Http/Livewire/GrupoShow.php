@@ -4,11 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Alumno;
 use App\Models\Grupo;
-use App\Models\Inscripcion;
 use App\Models\Pago;
 use App\Traits\MyAlerts;
 use App\Traits\PagosTraits;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class GrupoShow extends Component

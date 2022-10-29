@@ -19,9 +19,9 @@
             </div>
         </div>
         <x-select name="grupo_id" label="Grupo">
-            <option value="">Seleccionar</option>
-            @forelse ($this->inscripciones as $inscripcion)
-                <option value="{{ $inscripcion->grupo_id }}">{{ $inscripcion->nombre }}</option>
+            <option value="null">Ninguno</option>
+            @forelse ($this->grupos as $grupo)
+                <option value="{{ $grupo->id }}">{{ $grupo->curso }}</option>
             @empty
                 <option value="">No hay inscripciones</option>
             @endforelse
@@ -29,8 +29,6 @@
     </x-modal>
 
     <div class="card-body">
-        <x-message></x-message>
-
         <div class="row mb-3">
             <div class="col-lg-3">
                 <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
