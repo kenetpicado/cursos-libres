@@ -19,6 +19,8 @@ class Cursos extends Component
     public $nombre = null;
     public $estado = 1;
 
+    public $estadosearch = 1;
+
     protected $listeners = ['delete_element'];
 
     public function resetFields()
@@ -40,6 +42,9 @@ class Cursos extends Component
     public function render()
     {
         $cursos = DB::table('cursos')
+            ->when($this->estadosearch, function ($q) {
+                $q->where('cursos.estado', $this->estadosearch);
+            })
             ->orderBy('estado', 'desc')
             ->orderBy('nombre')
             ->paginate(20);

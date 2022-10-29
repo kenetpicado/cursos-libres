@@ -23,6 +23,8 @@ class Docentes extends Component
     public $viatico = null;
     public $estado = 1;
 
+    public $estadosearch = 1;
+
     public function resetFields()
     {
         $this->reset();
@@ -40,6 +42,9 @@ class Docentes extends Component
     public function render()
     {
         $docentes = DB::table('docentes')
+            ->when($this->estadosearch, function ($q) {
+                $q->where('docentes.estado', $this->estadosearch);
+            })
             ->orderBy('estado', 'desc')
             ->orderBy('nombre')
             ->paginate(20);
