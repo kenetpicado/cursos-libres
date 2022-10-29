@@ -45,6 +45,12 @@
             <div class="col-lg-3">
                 <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
             </div>
+            <div class="col-lg-3">
+                <select class="form-control" wire:model="estado_search">
+                    <option value="1">Activos</option>
+                    <option value="false">Inactivos</option>
+                </select>
+            </div>
         </div>
         <x-table>
             @slot('header')

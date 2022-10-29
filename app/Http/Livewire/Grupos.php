@@ -23,6 +23,7 @@ class Grupos extends Component
     public $docente_id = null;
 
     public $search = null;
+    public $estado_search = 1;
 
     protected $listeners = ['delete_element'];
 
@@ -37,7 +38,7 @@ class Grupos extends Component
         'horario'   => 'required|max:50',
         'duracion'  => 'required|max:50',
         'curso_id'  => 'required|integer',
-        'docente_id'=> 'required|integer',
+        'docente_id' => 'required|integer',
         'estado'    => 'required|in:1,0'
     ];
 
@@ -67,7 +68,10 @@ class Grupos extends Component
                 'docentes.nombre as docente',
                 DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
             ])
-            ->where('grupos.estado', '1')
+            ->when($this->estado_search, function ($q) {
+                $q->where('grupos.estado', $this->estado_search);
+            })
+            ->orderBy('estado', 'desc')
             ->latest('id')
             ->when($this->search, function ($q) {
                 $q->where('cursos.nombre', 'like', '%' . $this->search . '%')
