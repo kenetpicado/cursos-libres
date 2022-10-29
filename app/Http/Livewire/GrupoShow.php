@@ -37,12 +37,14 @@ class GrupoShow extends Component
         'concepto' => 'required|max:100',
         'monto' => 'required|numeric',
         'recibi_de' => 'required|max:50',
+        'created_at' => 'required|date'
     ];
 
     public function mount($id)
     {
         $this->grupo_id = $id;
         $this->recibi_de = auth()->user()->name;
+        $this->created_at = date('Y-m-d');
     }
 
     /* Obtener los alumnos de un grupo */
