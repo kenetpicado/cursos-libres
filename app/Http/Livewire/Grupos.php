@@ -59,15 +59,14 @@ class Grupos extends Component
 
     public function getGruposProperty()
     {
-        return DB::table('grupos')
-            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
+        return Grupo::join('cursos', 'cursos.id', '=', 'grupos.curso_id')
             ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
             ->select([
                 'grupos.*',
                 'cursos.nombre as curso',
-                'docentes.nombre as docente',
-                DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
+                'docentes.nombre as docente'
             ])
+            ->with('alumnos:id')
             ->when($this->estado_search, function ($q) {
                 $q->where('grupos.estado', $this->estado_search);
             })
@@ -111,9 +110,9 @@ class Grupos extends Component
 
     public function delete_element($grupo_id)
     {
-        $grupo = Grupo::find($grupo_id);
+        $grupo = Grupo::find($grupo_id, ['id']);
 
-        if ($grupo->inscripciones()->count() > 0)
+        if ($grupo->alumnos->count() > 0)
             $this->delete(false);
         else {
             $grupo->delete();

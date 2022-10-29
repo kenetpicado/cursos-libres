@@ -19,6 +19,11 @@ class Grupo extends Model
 
     public $timestamps = false;
 
+    public function alumnos()
+    {
+        return $this->belongsToMany(Alumno::class);
+    }
+
     public function setHorarioAttribute($value)
     {
         $this->attributes['horario'] = trim(strtoupper($value));
