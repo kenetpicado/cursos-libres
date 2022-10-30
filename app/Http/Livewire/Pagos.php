@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Grupo;
 use App\Models\Pago;
 use App\Traits\AlumnosTraits;
 use App\Traits\MyAlerts;
@@ -29,11 +30,11 @@ class Pagos extends Component
 
     protected $rules = [
         'alumno_id' => 'required|integer',
-        'grupo_id' => 'nullable|integer',
-        'concepto' => 'required|max:100',
-        'monto' => 'required|numeric',
+        'grupo_id'  => 'nullable|integer',
+        'concepto'  => 'required|max:100',
+        'monto'     => 'required|numeric',
         'recibi_de' => 'required|max:50',
-        'created_at' => 'required|date',
+        'created_at'=> 'required|date',
     ];
 
     public function mount()
@@ -44,7 +45,7 @@ class Pagos extends Component
 
     public function resetFields()
     {
-        $this->resetExcept(['recibi_de', 'created_at']);	
+        $this->resetExcept(['recibi_de', 'created_at']);
         $this->resetErrorBag();
     }
 
@@ -57,6 +58,15 @@ class Pagos extends Component
     {
         $this->alumno_id = $alumno_id;
         $this->emit('open-modal');
+    }
+
+    public function getGruposProperty()
+    {
+        return Grupo::whereHas('alumnos', function ($q) {
+            $q->where('alumno_id', $this->alumno_id);
+        })
+            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
+            ->get(['grupos.id', 'cursos.nombre as curso']);
     }
 
     public function store()
@@ -74,5 +84,4 @@ class Pagos extends Component
     {
         return date('d-m-y', strtotime($value));
     }
-
 }

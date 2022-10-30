@@ -3,11 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Alumno;
-use App\Models\Inscripcion;
+use App\Models\Grupo;
 use App\Models\Pago;
 use App\Traits\AlumnosTraits;
 use App\Traits\MyAlerts;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -29,12 +28,13 @@ class Alumnos extends Component
     public $comunidad = null;
     public $direccion = null;
     public $created_at = null;
+    public $grupo_id = null;
 
+    /* Datos del pago */
     public $monto = null;
+    public $concepto = "PAGO DE MATRICULA";
 
     public $search = null;
-
-    public $grupo_id = null;
 
     protected $rules = [
         'nombre'    => 'required',
@@ -49,17 +49,16 @@ class Alumnos extends Component
     
     public function getGruposProperty()
     {
-        return DB::table('grupos')
-            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
+        return Grupo::join('cursos', 'cursos.id', '=', 'grupos.curso_id')
             ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
             ->where('grupos.anyo', date('Y'))
             ->where('grupos.estado', '1')
+            ->with('alumnos:id')
             ->get([
                 'grupos.id',
                 'grupos.horario',
                 'cursos.nombre as curso',
-                'docentes.nombre as docente',
-                DB::raw('(select count(*) from inscripcions where grupos.id = inscripcions.grupo_id) as inscripciones_count')
+                'docentes.nombre as docente'
             ]);
     }
 
@@ -99,10 +98,7 @@ class Alumnos extends Component
             $alumno = Alumno::create($data);
 
             /* Crear la inscripcion al grupo */
-            Inscripcion::create([
-                'grupo_id' => $this->grupo_id,
-                'alumno_id' => $alumno->id,
-            ]);
+            $alumno->grupos()->attach($this->grupo_id);
 
             /* Generar el pago de matricula */
             Pago::create([

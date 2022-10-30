@@ -4,11 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Alumno;
 use App\Models\Grupo;
-use App\Models\Inscripcion;
 use App\Models\Pago;
 use App\Traits\MyAlerts;
 use App\Traits\PagosTraits;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class GrupoShow extends Component
@@ -52,16 +50,11 @@ class GrupoShow extends Component
     /* Obtener los alumnos de un grupo */
     public function getAlumnosProperty()
     {
-        return DB::table('inscripcions')
-            ->where('grupo_id', $this->grupo_id)
-            ->join('alumnos', 'alumnos.id', '=', 'inscripcions.alumno_id')
-            ->select([
-                'inscripcions.id',
-                'alumnos.id as alumno_id',
-                'alumnos.carnet',
-                'alumnos.nombre'
-            ])
-            ->orderBy('alumnos.nombre')
+        return Alumno::whereHas('grupos', function ($q) {
+            $q->where('grupo_id', $this->grupo_id);
+        })
+            ->select(['id', 'nombre', 'carnet'])
+            ->orderBy('nombre')
             ->paginate(20);
     }
 
@@ -81,11 +74,17 @@ class GrupoShow extends Component
     public function getResultsProperty()
     {
         return $this->search
-            ? DB::table('alumnos')
-            ->select(['id', 'nombre', 'carnet'])
+            ? Alumno::select(['id', 'nombre', 'carnet'])
             ->latest('id')
-            ->where('carnet', 'like', '%' . $this->search . '%')
-            ->orWhere('nombre', 'like', '%' . $this->search . '%')
+            ->where(function ($q) {
+                $q->doesntHave('grupos')->orWhereHas('grupos', function ($q) {
+                    $q->where('grupo_id', '!=', $this->grupo_id);
+                });
+            })
+            ->where(function ($q) {
+                $q->where('carnet', 'like', '%' . $this->search . '%')
+                    ->orWhere('nombre', 'like', '%' . $this->search . '%');
+            })
             ->limit(4)
             ->get()
             : [];
@@ -96,23 +95,12 @@ class GrupoShow extends Component
         return view('livewire.grupo-show');
     }
 
-    public function inscribir($id)
+    public function inscribir($alumno_id)
     {
-        $exist = Inscripcion::where('grupo_id', $this->grupo_id)
-            ->where('alumno_id', $id)
-            ->count();
+        $alumno = Alumno::find($alumno_id);
+        $alumno->grupos()->attach($this->grupo_id);
 
-        if ($exist > 0)
-            $this->no_added();
-        else {
-            Inscripcion::create([
-                'grupo_id' => $this->grupo_id,
-                'alumno_id' => $id
-            ]);
-
-            $alumno = Alumno::find($id, ['nombre']);
-            $this->added($alumno->nombre);
-        }
+        $this->added($alumno->nombre);
     }
 
     public function pagar($alumno_id)
@@ -132,9 +120,9 @@ class GrupoShow extends Component
         $this->emit('close-modal');
     }
 
-    public function delete_element($inscripcion_id)
+    public function delete_element($alumno_id)
     {
-        Inscripcion::find($inscripcion_id)->delete();
+        Alumno::find($alumno_id)->grupos()->detach($this->grupo_id);
         $this->delete();
     }
 }

@@ -44,8 +44,8 @@
                 <option value="">Seleccionar Curso</option>
                 @forelse ($this->grupos as $grupo)
                     <option value="{{ $grupo->id }}">
-                        {{ $grupo->curso }} | {{ $grupo->docente }} | {{ $grupo->horario }} |
-                        {{ $grupo->inscripciones_count }}
+                        {{ $grupo->alumnos->count() }} -
+                        {{ $grupo->curso }} | {{ $grupo->docente }} | {{ $grupo->horario }}
                     </option>
                 @empty
                     <option value="">No hay grupos</option>

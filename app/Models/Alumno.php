@@ -12,6 +12,11 @@ class Alumno extends Model
     protected $fillable = ['carnet', 'nombre', 'edad', 'celular', 'ciudad', 'comunidad', 'direccion', 'created_at'];
 
     public $timestamps = false;
+
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class);
+    }
     
     public function setNombreAttribute($value)
     {

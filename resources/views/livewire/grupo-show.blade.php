@@ -57,7 +57,6 @@
                 <x-input name="recibi_de" label="Recibi de"></x-input>
             </div>
         </div>
-        
     </x-modal>
 
     <div class="card-body">
@@ -82,7 +81,7 @@
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
                     <td data-title="Nombre">{{ $alumno->nombre }}</td>
                     <td>
-                        <button wire:click="pagar({{ $alumno->alumno_id }})" class="btn btn-sm btn-primary">
+                        <button wire:click="pagar({{ $alumno->id }})" class="btn btn-sm btn-primary">
                             Pagar
                         </button>
                     </td>
@@ -98,20 +97,18 @@
                                         Ver pagos
                                     </a>
                                 </li>
-                                {{-- <li><button class="dropdown-item" wire:click="edit({{ $alumno->id }})">Editar</button></li> --}}
                                 <li>
                                     <button class="dropdown-item"
                                         onclick="delete_element('{{ $alumno->id }}', '{{ $alumno->nombre }}')">Eliminar
                                         del grupo</button>
                                 </li>
-                               
                             </ul>
                         </div>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3" class="text-center">No hay registros</td>
+                    <td colspan="4" class="text-center">No hay registros</td>
                 </tr>
             @endforelse
         </x-table>

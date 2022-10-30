@@ -40,7 +40,6 @@
     </x-modal>
 
     <div class="card-body">
-        <x-message></x-message>
         <div class="row gy-3 mb-3">
             <div class="col-lg-3">
                 <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
@@ -61,6 +60,7 @@
                 <th>Alumnos</th>
                 <th>Acción</th>
             @endslot
+
             @forelse ($this->grupos as $grupo)
                 <tr>
                     <td data-title="ID">{{ $grupo->id }}</td>
@@ -77,7 +77,7 @@
                     <td data-title="Año / Horario">{{ $grupo->anyo }} / {{ $grupo->horario }}</td>
                     <td data-title="Alumnos">
                         <a href="{{ route('grupos.show', $grupo->id) }}"
-                            class="btn btn-sm btn-primary">{{ $grupo->inscripciones_count }}</a>
+                            class="btn btn-sm btn-primary"> {{ $grupo->alumnos->count() }}</a>
                     </td>
                     <td>
                         <div class="m-0 p-0">
