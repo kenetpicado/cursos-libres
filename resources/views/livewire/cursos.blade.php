@@ -17,7 +17,10 @@
         <x-message></x-message>
         <div class="row gy-3 mb-3">
             <div class="col-lg-3">
-                <select class="form-control" wire:model="estadosearch">
+                <input class="form-control" type="search" placeholder="Buscar" wire:model="search">
+            </div>
+            <div class="col-lg-3">
+                <select class="form-control" wire:model="estado_search">
                     <option value="1">Activos</option>
                     <option value="false">Inactivos</option>
                 </select>

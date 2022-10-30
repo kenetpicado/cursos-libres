@@ -19,7 +19,8 @@ class Cursos extends Component
     public $nombre = null;
     public $estado = 1;
 
-    public $estadosearch = 1;
+    public $search = null;
+    public $estado_search = 1;
 
     protected $listeners = ['delete_element'];
 
@@ -42,8 +43,11 @@ class Cursos extends Component
     public function render()
     {
         $cursos = DB::table('cursos')
-            ->when($this->estadosearch, function ($q) {
-                $q->where('cursos.estado', $this->estadosearch);
+            ->when($this->estado_search, function ($q) {
+                $q->where('cursos.estado', $this->estado_search);
+            })
+            ->when($this->search, function ($q) {
+                $q->where('cursos.nombre', 'like', '%' . $this->search . '%');
             })
             ->orderBy('estado', 'desc')
             ->orderBy('nombre')
