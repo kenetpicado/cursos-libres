@@ -2,20 +2,16 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Alumno;
 
 trait AlumnosTraits
 {
     /* Todos los alumnos */
     public function getAlumnosProperty()
     {
-        return DB::table('alumnos')
-            ->select(['id', 'nombre', 'carnet'])
+        return Alumno::select(['id', 'nombre', 'carnet'])
             ->latest('id')
-            ->when($this->search, function ($q) {
-                $q->where('carnet', 'like', '%' . $this->search . '%')
-                    ->orWhere('nombre', 'like', '%' . $this->search . '%');
-            })
+            ->search($this->search)
             ->paginate(20);
     }
 }

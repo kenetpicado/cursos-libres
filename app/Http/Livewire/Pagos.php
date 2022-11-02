@@ -2,39 +2,35 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Grupo;
+use App\Models\Alumno;
 use App\Models\Pago;
-use App\Traits\AlumnosTraits;
 use App\Traits\MyAlerts;
-use App\Traits\PagosTraits;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Pagos extends Component
 {
     use WithPagination;
-    use PagosTraits;
-    use AlumnosTraits;
     use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
-    public $sub_id = null;
     public $alumno_id = null;
-    public $grupo_id = null;
     public $concepto = null;
     public $monto = null;
     public $recibi_de = null;
     public $created_at = null;
 
+    public $alumno_grupo_id = null;
+
     public $search = null;
 
     protected $rules = [
-        'alumno_id' => 'required|integer',
-        'grupo_id'  => 'nullable|integer',
-        'concepto'  => 'required|max:100',
-        'monto'     => 'required|numeric',
-        'recibi_de' => 'required|max:50',
-        'created_at'=> 'required|date',
+        'alumno_grupo_id' => 'required|integer',
+        'concepto'      => 'required|max:100',
+        'created_at'    => 'required|date',
+        'monto'         => 'required|numeric',
+        'recibi_de'     => 'required|max:50',
     ];
 
     public function mount()
@@ -51,7 +47,19 @@ class Pagos extends Component
 
     public function render()
     {
-        return view('livewire.pagos');
+        $alumno = Alumno::when($this->alumno_id, function ($q) {
+            $q->with(['grupos' => function ($q) {
+                $q->allInfo();
+            }]);
+        })
+            ->find($this->alumno_id, ['id', 'nombre']);
+
+        $alumnos = Alumno::select(['id', 'nombre', 'carnet'])
+            ->latest('id')
+            ->search($this->search)
+            ->paginate(20);
+
+        return view('livewire.pagos', compact('alumno', 'alumnos'));
     }
 
     public function pagar($alumno_id)
@@ -60,28 +68,15 @@ class Pagos extends Component
         $this->emit('open-modal');
     }
 
-    public function getGruposProperty()
-    {
-        return Grupo::whereHas('alumnos', function ($q) {
-            $q->where('alumno_id', $this->alumno_id);
-        })
-            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
-            ->get(['grupos.id', 'cursos.nombre as curso']);
-    }
-
     public function store()
     {
         $data = $this->validate();
-        Pago::updateOrCreate(['id' => $this->sub_id], $data);
 
-        $this->success($this->sub_id);
+        Pago::create($data);
+
+        $this->success();
 
         $this->resetFields();
         $this->emit('close-modal');
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return date('d-m-y', strtotime($value));
     }
 }

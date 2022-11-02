@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Alumno;
+use App\Models\AlumnoGrupo;
 use App\Models\Grupo;
 use App\Models\Pago;
 use App\Traits\MyAlerts;
@@ -13,31 +14,33 @@ class GrupoShow extends Component
 {
     use PagosTraits;
     use MyAlerts;
+
     public $grupo_id = null;
-    public $temp = null;
+    public $alumno_id = null;
+    public $alumno_grupo_id = null;
+
     public $search = null;
+    public $search_alumno = null;
 
     public $concepto = null;
     public $monto = null;
     public $recibi_de = null;
-
-    public $alumno_id = null;
+    public $created_at = null;
 
     protected $listeners = ['delete_element', 'inscribir'];
 
     public function resetFields()
     {
-        $this->reset(['search']);
+        $this->resetExcept(['grupo_id', 'created_at', 'recibi_de']);
         $this->resetErrorBag();
     }
 
     protected $rules = [
-        'alumno_id' => 'required|integer',
-        'grupo_id' => 'nullable|integer',
-        'concepto' => 'required|max:100',
-        'monto' => 'required|numeric',
-        'recibi_de' => 'required|max:50',
-        'created_at' => 'required|date'
+        'alumno_grupo_id' => 'required|integer',
+        'concepto'       => 'required|max:100',
+        'monto'          => 'required|numeric',
+        'recibi_de'      => 'required|max:50',
+        'created_at'     => 'required|date'
     ];
 
     public function mount($id)
@@ -45,30 +48,6 @@ class GrupoShow extends Component
         $this->grupo_id = $id;
         $this->recibi_de = auth()->user()->name;
         $this->created_at = date('Y-m-d');
-    }
-
-    /* Obtener los alumnos de un grupo */
-    public function getAlumnosProperty()
-    {
-        return Alumno::whereHas('grupos', function ($q) {
-            $q->where('grupo_id', $this->grupo_id);
-        })
-            ->select(['id', 'nombre', 'carnet'])
-            ->orderBy('nombre')
-            ->paginate(20);
-    }
-
-    public function getGrupoProperty()
-    {
-        return Grupo::where('grupos.id', $this->grupo_id)
-            ->join('cursos', 'cursos.id', '=', 'grupos.curso_id')
-            ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
-            ->select([
-                'grupos.horario',
-                'cursos.nombre as curso',
-                'docentes.nombre as docente'
-            ])
-            ->first();
     }
 
     public function getResultsProperty()
@@ -92,26 +71,40 @@ class GrupoShow extends Component
 
     public function render()
     {
-        return view('livewire.grupo-show');
+        $grupo = Grupo::with([
+            'alumnos' => function ($q) {
+                $q->orderBy('nombre')
+                    ->select(['alumnos.id', 'carnet', 'nombre'])
+                    ->search($this->search_alumno);
+            }
+        ])
+            ->liteInfo()
+            ->find($this->grupo_id);
+
+        return view('livewire.grupo-show', compact('grupo'));
     }
 
     public function inscribir($alumno_id)
     {
-        $alumno = Alumno::find($alumno_id);
+        $alumno = Alumno::find($alumno_id, ['id']);
         $alumno->grupos()->attach($this->grupo_id);
 
         $this->added($alumno->nombre);
     }
 
-    public function pagar($alumno_id)
+    /* Open Modal: Pagar */
+    public function pagar($alumno_id, $alumno_grupo_id)
     {
         $this->alumno_id = $alumno_id;
+        $this->alumno_grupo_id = $alumno_grupo_id;
         $this->emit('open-modal-pagar');
     }
 
+    /* Guardar Pago */
     public function store()
     {
         $data = $this->validate();
+
         Pago::create($data);
 
         $this->success();
@@ -120,9 +113,15 @@ class GrupoShow extends Component
         $this->emit('close-modal');
     }
 
-    public function delete_element($alumno_id)
+    public function delete_element($alumno_grupo_id)
     {
-        Alumno::find($alumno_id)->grupos()->detach($this->grupo_id);
-        $this->delete();
+        $alumno_grupo = AlumnoGrupo::find($alumno_grupo_id);
+
+        if ($alumno_grupo->pagos->count() > 0)
+            $this->delete(false);
+        else {
+            $alumno_grupo->delete();
+            $this->delete();
+        }
     }
 }

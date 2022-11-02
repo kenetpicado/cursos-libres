@@ -8,7 +8,7 @@
 
     <x-modal label="Pagar">
         <div class="mb-2">Registrar nuevo pago del alumno:</div>
-        <h6 class="mb-3">{{ $this->alumno->nombre ?? '' }}</h6>
+        <h6 class="mb-3">{{ $alumno->nombre ?? '' }}</h6>
         <x-input name="concepto"></x-input>
         <div class="row">
             <div class="col">
@@ -18,10 +18,14 @@
                 <x-input name="recibi_de" label="Recibi de"></x-input>
             </div>
         </div>
-        <x-select name="grupo_id" label="Grupo">
+        <x-select name="alumno_grupo_id" label="Grupo">
             <option value="null">Ninguno</option>
-            @forelse ($this->grupos as $grupo)
-                <option value="{{ $grupo->id }}">{{ $grupo->curso }}</option>
+            @forelse ($alumno->grupos ?? [] as $grupo)
+                <option value="{{ $grupo->pivot->id }}">
+                    {{ $grupo->curso }} |
+                    {{ $grupo->docente }} |
+                    {{ $grupo->horario }}
+                </option>
             @empty
                 <option value="">No hay inscripciones</option>
             @endforelse
@@ -43,7 +47,7 @@
                 <th>Acción</th>
                 <th>Acción</th>
             @endslot
-            @forelse ($this->alumnos as $alumno)
+            @forelse ($alumnos as $alumno)
                 <tr>
                     <td data-title="#">{{ $alumno->id }}</td>
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
@@ -65,6 +69,6 @@
                 </tr>
             @endforelse
         </x-table>
-        {{ $this->alumnos->links() }}
+        {{ $alumnos->links() }}
     </div>
 </div>

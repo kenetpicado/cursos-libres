@@ -7,20 +7,6 @@
     <x-header-modal label="Grupo" btn="Agregar Alumno" modal="modal2"></x-header-modal>
 
     <x-modal2 label="Agregar Alumno al Grupo">
-        @if (session()->has('added'))
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                {{ session('added') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        @if (session()->has('exist'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('exist') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
         <input class="form-control mb-4" type="search" placeholder="Buscar alumno" wire:model="search">
         <x-table>
             @slot('header')
@@ -60,15 +46,16 @@
     </x-modal>
 
     <div class="card-body">
-        <x-message></x-message>
-
-        <div class="my-3">
-            <div class="text-secondary mb-2">Mostrando todos los alumnos del curso: </div>
-            <h6 class="fw-bolder">{{ $this->grupo->curso }}</h6>
-            <h6>Horario: {{ $this->grupo->horario }}</h6>
-            <h6>Docente: {{ $this->grupo->docente }}</h6>
+        <div class="row mb-3">
+            <div class="col-lg-3">
+                <input class="form-control" type="search" placeholder="Buscar" wire:model="search_alumno">
+            </div>
         </div>
-
+        <div class="mb-3">
+            <h6 class="fw-bolder">{{ $grupo->curso }}</h6>
+            <h6>Horario: {{ $grupo->horario }}</h6>
+            <h6>Docente: {{ $grupo->docente }}</h6>
+        </div>
         <x-table>
             @slot('header')
                 <th>Carnet</th>
@@ -76,12 +63,12 @@
                 <th>Acción</th>
                 <th>Acciones</th>
             @endslot
-            @forelse ($this->alumnos as $alumno)
+            @forelse ($grupo->alumnos as $alumno)
                 <tr>
                     <td data-title="Carnet">{{ $alumno->carnet }}</td>
                     <td data-title="Nombre">{{ $alumno->nombre }}</td>
                     <td>
-                        <button wire:click="pagar({{ $alumno->id }})" class="btn btn-sm btn-primary">
+                        <button wire:click="pagar({{ $alumno->id }}, {{$alumno->pivot->id}})" class="btn btn-sm btn-primary">
                             Pagar
                         </button>
                     </td>
@@ -99,7 +86,7 @@
                                 </li>
                                 <li>
                                     <button class="dropdown-item"
-                                        onclick="delete_element('{{ $alumno->id }}', '{{ $alumno->nombre }}')">Eliminar
+                                        onclick="delete_element('{{ $alumno->pivot->id }}', '{{ $alumno->nombre }}')">Eliminar
                                         del grupo</button>
                                 </li>
                             </ul>
@@ -112,6 +99,6 @@
                 </tr>
             @endforelse
         </x-table>
-        {{ $this->alumnos->links() }}
+        {{-- {{ $grupo->alumnos->links() }} --}}
     </div>
 </div>

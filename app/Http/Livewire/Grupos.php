@@ -35,11 +35,11 @@ class Grupos extends Component
 
     protected $rules = [
         'anyo'      => 'required|digits:4',
-        'horario'   => 'required|max:50',
-        'duracion'  => 'required|max:50',
         'curso_id'  => 'required|integer',
-        'docente_id' => 'required|integer',
-        'estado'    => 'required|in:1,0'
+        'docente_id'=> 'required|integer',
+        'duracion'  => 'required|max:50',
+        'estado'    => 'required|in:1,0',
+        'horario'   => 'required|max:50',
     ];
 
     public function mount()
@@ -49,30 +49,25 @@ class Grupos extends Component
 
     public function getCursosProperty()
     {
-        return DB::table('cursos')->where('estado', '1')->get(['id', 'nombre']);
+        return DB::table('cursos')
+            ->where('estado', '1')
+            ->get(['id', 'nombre']);
     }
 
     public function getDocentesProperty()
     {
-        return DB::table('docentes')->where('estado', '1')->get(['id', 'nombre']);
+        return DB::table('docentes')
+            ->where('estado', '1')
+            ->get(['id', 'nombre']);
     }
 
     public function getGruposProperty()
     {
-        return Grupo::join('cursos', 'cursos.id', '=', 'grupos.curso_id')
-            ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
-            ->select([
-                'grupos.*',
-                'cursos.nombre as curso',
-                'docentes.nombre as docente'
-            ])
-            ->with('alumnos:id')
-            ->when($this->estado_search, function ($q) {
-                $q->where('grupos.estado', $this->estado_search);
-            })
-            ->orderBy('estado', 'desc')
+        return Grupo::allInfo()
+            ->withCount('alumnos')
+            ->activo($this->estado_search)
             ->latest('id')
-            ->when($this->search, function ($q) {
+            ->where(function ($q) {
                 $q->where('cursos.nombre', 'like', '%' . $this->search . '%')
                     ->orWhere('docentes.nombre', 'like', '%' . $this->search . '%');
             })

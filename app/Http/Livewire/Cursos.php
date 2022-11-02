@@ -43,13 +43,8 @@ class Cursos extends Component
     public function render()
     {
         $cursos = DB::table('cursos')
-            ->when($this->estado_search, function ($q) {
-                $q->where('cursos.estado', $this->estado_search);
-            })
-            ->when($this->search, function ($q) {
-                $q->where('cursos.nombre', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy('estado', 'desc')
+            ->where('cursos.estado', $this->estado_search)
+            ->where('cursos.nombre', 'like', '%' . $this->search . '%')
             ->orderBy('nombre')
             ->paginate(20);
 

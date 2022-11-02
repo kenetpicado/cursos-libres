@@ -77,7 +77,7 @@
                     <td data-title="Año / Horario">{{ $grupo->anyo }} / {{ $grupo->horario }}</td>
                     <td data-title="Alumnos">
                         <a href="{{ route('grupos.show', $grupo->id) }}"
-                            class="btn btn-sm btn-primary"> {{ $grupo->alumnos->count() }}</a>
+                            class="btn btn-sm btn-primary"> {{ $grupo->alumnos_count }}</a>
                     </td>
                     <td>
                         <div class="m-0 p-0">

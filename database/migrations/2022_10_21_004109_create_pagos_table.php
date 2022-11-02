@@ -19,18 +19,11 @@ class CreatePagosTable extends Migration
             $table->decimal('monto');
             $table->string('recibi_de', 50);
 
-            $table->unsignedBigInteger('alumno_id');
-            $table->foreign('alumno_id')
+            $table->unsignedBigInteger('alumno_grupo_id');
+            $table->foreign('alumno_grupo_id')
                 ->references('id')
-                ->on('alumnos');
+                ->on('alumno_grupo');
 
-            $table->unsignedBigInteger('grupo_id')->nullable();
-            $table->foreign('grupo_id')
-                ->references('id')
-                ->on('grupos')
-                ->onDelete('set null');
-
-            //$table->timestamps();
             $table->date('created_at');
         });
     }

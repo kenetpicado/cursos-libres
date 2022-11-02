@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pago extends Model
 {
     use HasFactory;
-    protected $fillable = ['alumno_id', 'grupo_id', 'concepto', 'monto', 'recibi_de', 'created_at'];
+    protected $fillable = ['alumno_grupo_id', 'concepto', 'monto', 'recibi_de', 'created_at'];
 
     public $timestamps = false;
+
+    public function alumno_grupo()
+    {
+        return $this->belongsTo(AlumnoGrupo::class);
+    }
 
     public function setConceptoAttribute($value)
     {

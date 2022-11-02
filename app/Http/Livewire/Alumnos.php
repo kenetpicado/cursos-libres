@@ -37,29 +37,23 @@ class Alumnos extends Component
     public $search = null;
 
     protected $rules = [
-        'nombre'    => 'required',
         'carnet'    => 'required|max:10|unique:alumnos',
-        'edad'      => 'required|integer',
         'celular'   => 'required|numeric|digits:8',
         'ciudad'    => 'required|max:50',
         'comunidad' => 'required|max:50',
-        'direccion' => 'required|max:70',
         'created_at' => 'required|date',
+        'direccion' => 'required|max:70',
+        'edad'      => 'required|integer',
+        'nombre'    => 'required',
     ];
     
     public function getGruposProperty()
     {
-        return Grupo::join('cursos', 'cursos.id', '=', 'grupos.curso_id')
-            ->join('docentes', 'docentes.id', '=', 'grupos.docente_id')
-            ->where('grupos.anyo', date('Y'))
-            ->where('grupos.estado', '1')
-            ->with('alumnos:id')
-            ->get([
-                'grupos.id',
-                'grupos.horario',
-                'cursos.nombre as curso',
-                'docentes.nombre as docente'
-            ]);
+        return Grupo::liteInfo()
+            ->anyo()
+            ->activo()
+            ->withCount('alumnos')
+            ->get();
     }
 
     public function mount()

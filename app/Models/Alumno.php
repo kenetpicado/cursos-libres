@@ -8,16 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Alumno extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = ['carnet', 'nombre', 'edad', 'celular', 'ciudad', 'comunidad', 'direccion', 'created_at'];
 
     public $timestamps = false;
 
+    public function scopeSearch($query, $value)
+    {
+        return $query->where(function ($q) use ($value) {
+            $q->where('carnet', 'like', '%' . $value . '%')
+                ->orWhere('nombre', 'like', '%' . $value . '%');
+        });
+    }
+
     public function grupos()
     {
-        return $this->belongsToMany(Grupo::class);
+        return $this->belongsToMany(Grupo::class)->withPivot('id');
     }
-    
+
     public function setNombreAttribute($value)
     {
         $this->attributes['nombre'] = trim(strtoupper($value));
@@ -41,10 +49,5 @@ class Alumno extends Model
     public function getCreatedAtAttribute($value)
     {
         return date('d-m-y', strtotime($value));
-    }
-
-    public function pagos()
-    {
-        return $this->hasMany(Pago::class);
     }
 }

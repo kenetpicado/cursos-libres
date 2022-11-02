@@ -43,13 +43,8 @@ class Docentes extends Component
     public function render()
     {
         $docentes = DB::table('docentes')
-            ->when($this->estado_search, function ($q) {
-                $q->where('docentes.estado', $this->estado_search);
-            })
-            ->when($this->search, function ($q) {
-                $q->where('docentes.nombre', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy('estado', 'desc')
+            ->where('docentes.estado', $this->estado_search)
+            ->where('docentes.nombre', 'like', '%' . $this->search . '%')
             ->orderBy('nombre')
             ->paginate(20);
 
