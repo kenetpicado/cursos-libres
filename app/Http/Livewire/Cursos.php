@@ -76,7 +76,7 @@ class Cursos extends Component
 
     public function delete_element($curso_id)
     {
-        $curso = Curso::find($curso_id);
+        $curso = Curso::find($curso_id, ['id']);
 
         if ($curso->grupos()->count() > 0)
             $this->delete(false);
