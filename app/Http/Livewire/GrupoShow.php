@@ -55,11 +55,17 @@ class GrupoShow extends Component
         return $this->search
             ? Alumno::select(['id', 'nombre', 'carnet'])
             ->latest('id')
-            ->where(function ($q) {
+            //mostrar los alumnos que no estan en el grupo actual
+            ->whereNotIn('id', function ($query) {
+                $query->select('alumno_id')
+                    ->from('alumno_grupo')
+                    ->where('grupo_id', $this->grupo_id);
+            })
+            /*->where(function ($q) {
                 $q->doesntHave('grupos')->orWhereHas('grupos', function ($q) {
                     $q->where('grupo_id', '!=', $this->grupo_id);
                 });
-            })
+            })*/
             ->where(function ($q) {
                 $q->where('carnet', 'like', '%' . $this->search . '%')
                     ->orWhere('nombre', 'like', '%' . $this->search . '%');
