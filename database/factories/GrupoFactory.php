@@ -16,10 +16,10 @@ class GrupoFactory extends Factory
         return [
             'anyo' => "2022",
             'horario' => $this->faker->time('H:i:s', 'now'),
-            'duracion' => $this->faker->time('H:i:s', 'now'),
+            'duracion' => "3 MESES",
             'curso_id' => $this->faker->numberBetween(1, 10),
-            'docente_id' => $this->faker->numberBetween(1, 50),
-            'estado' => $this->faker->boolean(),
+            'docente_id' => $this->faker->numberBetween(1, 10),
+            'estado' => 1,
         ];
     }
 }

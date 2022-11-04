@@ -30,10 +30,6 @@ class Alumnos extends Component
     public $created_at = null;
     public $grupo_id = null;
 
-    /* Datos del pago */
-    public $monto = null;
-    public $concepto = "PAGO DE MATRICULA";
-
     public $search = null;
 
     protected $rules = [
@@ -85,24 +81,13 @@ class Alumnos extends Component
         } else {
             /* Si es nuevo registro validar campos necesarios */
             $this->validate([
-                'grupo_id' => 'required',
-                'monto' => 'required|numeric'
+                'grupo_id' => 'required'
             ]);
 
             $alumno = Alumno::create($data);
 
             /* Crear la inscripcion al grupo */
             $alumno->grupos()->attach($this->grupo_id);
-
-            /* Generar el pago de matricula */
-           /* Pago::create([
-                'alumno_id' => $alumno->id,
-                'grupo_id' => $this->grupo_id,
-                'concepto' => "PAGO DE MATRICULA",
-                'monto' => $this->monto,
-                'recibi_de' => auth()->user()->name,
-                'created_at' => $this->created_at
-            ]); */
         }
 
         $this->success($this->sub_id);
