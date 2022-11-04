@@ -61,11 +61,6 @@ class GrupoShow extends Component
                     ->from('alumno_grupo')
                     ->where('grupo_id', $this->grupo_id);
             })
-            /*->where(function ($q) {
-                $q->doesntHave('grupos')->orWhereHas('grupos', function ($q) {
-                    $q->where('grupo_id', '!=', $this->grupo_id);
-                });
-            })*/
             ->where(function ($q) {
                 $q->where('carnet', 'like', '%' . $this->search . '%')
                     ->orWhere('nombre', 'like', '%' . $this->search . '%');
@@ -92,7 +87,7 @@ class GrupoShow extends Component
 
     public function inscribir($alumno_id)
     {
-        $alumno = Alumno::find($alumno_id, ['id']);
+        $alumno = Alumno::find($alumno_id, ['id', 'nombre']);
         $alumno->grupos()->attach($this->grupo_id);
 
         $this->added($alumno->nombre);

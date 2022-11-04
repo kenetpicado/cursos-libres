@@ -20,6 +20,13 @@ Route::middleware(['auth'])->group(function () {
     /* Hoja de Mamatricula */
     Route::get('hoja-de-matricula/{id}', [Reportes::class, 'hoja_matricula'])
         ->name('hoja_matricula');
+
+    /* Recibo */
+    Route::get('recibo-oficial/{id}', [Reportes::class, 'recibo_oficial'])
+        ->name('recibo_oficial');
+
+    Route::get('recibo-no-oficial/{id}', [Reportes::class, 'recibo_no_oficial'])
+        ->name('recibo_no_oficial');
 });
 
 Auth::routes();

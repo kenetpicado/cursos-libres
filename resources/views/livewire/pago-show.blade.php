@@ -25,8 +25,8 @@
                     <td data-title="Monto">C$ {{ $pago->monto }}</td>
                     <td data-title="Fecha">{{ $pago->created_at }}</td>
                     <td>
-                        <a href="http://" target="_blank">Oficial</a> -
-                        <a href="http://" target="_blank">No Oficial</a>
+                        <a href="{{ route('recibo_oficial', $pago->id) }}" target="_blank">Oficial</a> -
+                        <a href="{{ route('recibo_no_oficial', $pago->id) }}" target="_blank">No Oficial</a>
                     </td>
                 </tr>
             @empty
