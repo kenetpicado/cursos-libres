@@ -28,16 +28,7 @@
                 <x-input name="comunidad"></x-input>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <x-input name="direccion"></x-input>
-            </div>
-            @if (!$sub_id)
-                <div class="col-lg-6">
-                    <x-input name="monto" label="Monto matricula (C$)"></x-input>
-                </div>
-            @endif
-        </div>
+        <x-input name="direccion"></x-input>
 
         @if (!$sub_id)
             <x-select name="grupo_id" label="Inscribir a">

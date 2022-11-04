@@ -15,7 +15,7 @@ class Cursos extends Component
     use MyAlerts;
     protected $paginationTheme = 'bootstrap';
 
-    public $sub_id;
+    public $sub_id = null;
     public $nombre = null;
     public $estado = 1;
 

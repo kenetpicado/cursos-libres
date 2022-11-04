@@ -56,11 +56,6 @@ class GrupoShow extends Component
             ? Alumno::select(['id', 'nombre', 'carnet'])
             ->latest('id')
             ->where(function ($q) {
-                $q->doesntHave('grupos')->orWhereHas('grupos', function ($q) {
-                    $q->where('grupo_id', '!=', $this->grupo_id);
-                });
-            })
-            ->where(function ($q) {
                 $q->where('carnet', 'like', '%' . $this->search . '%')
                     ->orWhere('nombre', 'like', '%' . $this->search . '%');
             })

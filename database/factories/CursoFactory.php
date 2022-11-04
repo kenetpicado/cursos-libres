@@ -15,7 +15,7 @@ class CursoFactory extends Factory
     {
         return [
             'nombre' => $this->faker->word(),
-            'estado' => $this->faker->boolean(),
+            'estado' => 1,
         ];
     }
 }
