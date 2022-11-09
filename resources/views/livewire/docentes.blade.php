@@ -31,7 +31,6 @@
     </x-modal>
 
     <div class="card-body">
-        <x-message></x-message>
         <div class="row gy-3 mb-3">
             <div class="col-lg-3">
                 <input class="form-control" type="search" placeholder="Buscar" wire:model="search">

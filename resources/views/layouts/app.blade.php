@@ -24,7 +24,7 @@
     <div id="app">
         @include('partials.sidebar')
 
-        <main class="container my-4">
+        <div class="container my-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('index') }}">Inicio</a></li>
@@ -32,7 +32,7 @@
                 </ol>
             </nav>
             {{ $slot }}
-        </main>
+        </div>
     </div>
 
     @livewireScripts

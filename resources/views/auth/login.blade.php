@@ -21,7 +21,7 @@
             align-items: center;
             padding-top: 40px;
             padding-bottom: 40px;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
         }
 
         .form-signin {
@@ -32,7 +32,7 @@
     </style>
 </head>
 
-<body class="bg-light">
+<body class="">
     <main class="form-signin w-100 m-auto">
         <form method="POST" action="{{ route('login') }}">
             @csrf
