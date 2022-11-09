@@ -49,8 +49,7 @@ class Alumnos extends Component
             ->anyo()
             ->activo()
             ->withCount('alumnos')
-            ->get()
-            ->sortBy('grupo.');
+            ->get();
     }
 
     public function mount()
